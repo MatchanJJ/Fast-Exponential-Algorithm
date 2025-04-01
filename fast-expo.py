@@ -30,7 +30,13 @@ def compare_methods(base, exp):
     print(f"Base: {base}, Exponent: {exp}")
     print(f"Naive Method Time: {naive_time:.6f} seconds")
     print(f"Fast Exponentiation Time: {fast_time:.6f} seconds")
-    print(f"Speedup Factor: {naive_time / fast_time if fast_time > 0 else 'Inf'}x")
+    
+    if naive_time > fast_time:
+        speedup_factor = naive_time / fast_time if fast_time > 0 else 'Inf'
+        print(f"Fast Exponentiation is {speedup_factor}x faster.")
+    else:
+        speedup_factor = fast_time / naive_time if naive_time > 0 else 'Inf'
+        print(f"Naive Exponentiation is {speedup_factor}x faster.")
 
 def main():
     choice = input("Choose input type: (1) Manual (2) Random: ")
