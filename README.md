@@ -65,7 +65,3 @@ Naive Method Time: 0.002345 seconds
 Fast Exponentiation Time: 0.000012 seconds
 Fast Exponentiation is 195.42x faster.
 ```
-
-## License
-This project is open-source under the MIT License.
-
