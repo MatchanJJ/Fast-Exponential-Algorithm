@@ -38,7 +38,7 @@ This project compares two methods of exponentiation: the **naive method** and **
 
 1. **Clone or Download the Project:**
    ```sh
-   git clone https://github.com/MatchanJj/Fast-Exponential-Algorithm
+   git clone https://github.com/MatchanJJ/Fast-Exponential-Algorithm
    cd Fast-Exponential-Algorithm
    ```
    *(Alternatively, you can manually download the file to your desired directory.)*
