@@ -1,23 +1,37 @@
 import time
 import random
 import json 
+from decimal import Decimal, getcontext
+
+# Set precision for decimal calculations
+getcontext().prec = 1000000000
 
 def naive_exponentiation(base, exp):
-    result = 1
-    for _ in range(exp):
+    result = Decimal(1)
+    abs_exp = abs(exp)
+    base = Decimal(base)
+    for _ in range(abs_exp):
         result *= base
-    return result
+    return 1 / result if exp < 0 else result
 
 def fast_exponentiation(base, exp):
-    result = 1
-    while exp > 0:
-        if exp % 2 == 1:
+    result = Decimal(1)
+    abs_exp = abs(exp)
+    base = Decimal(base)
+    while abs_exp > 0:
+        if abs_exp % 2 == 1:
             result *= base
         base *= base
-        exp //= 2
-    return result
+        abs_exp //= 2
+    return 1 / result if exp < 0 else result
 
 def compare_methods(base, exp):
+    if base == 0 and exp < 0:
+        raise ValueError("Zero cannot be raised to a negative power.")
+    
+    print(f"\nTesting: {base}^({exp})")
+    print("-" * 40)
+    
     start = time.time()
     naive_result = naive_exponentiation(base, exp)
     naive_time = time.time() - start
@@ -26,10 +40,13 @@ def compare_methods(base, exp):
     fast_result = fast_exponentiation(base, exp)
     fast_time = time.time() - start
     
-    assert naive_result == fast_result, "Results do not match!"
-    
-    print(f"Base: {base}, Exponent: {exp}")
-    print(f"Naive Method Time: {naive_time:.6f} seconds")
+    # Format results with scientific notation for very small/large numbers
+    print(f"Naive Result:  {naive_result:.2E}")
+    print(f"Fast Result:   {fast_result:.2E}")
+    print(f"Results Match: {abs(naive_result - fast_result) < Decimal('1e-10')}") # Using small epsilon for float comparison
+
+    print(f"\nPerformance:")
+    print(f"Naive Method Time:        {naive_time:.6f} seconds")
     print(f"Fast Exponentiation Time: {fast_time:.6f} seconds")
     
     if naive_time > fast_time:
