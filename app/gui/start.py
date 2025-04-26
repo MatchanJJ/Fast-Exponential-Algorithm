@@ -1,5 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout
+from PyQt5.QtGui import QFontDatabase
 
 class startApp(QWidget):
     
@@ -14,6 +15,15 @@ class startApp(QWidget):
         self.label_2 = QLabel("COMPARING ALGORITHM")
         
         self.button_1 = QPushButton("start")
+        
+        
+        font_db = QFontDatabase()
+        font_db.addApplicationFont("path/to/IBM-Plex-Mono-Regular.ttf")
+
+        #stylesheets
+        self.setStyleSheet('background-color: #141920; color: #FFFFFF')
+        self.label_1.setStyleSheet('font-size: 64px; font-family: "Ibm Plex Mono", monospace;')
+        
         
         #Layout
         master_layout = QVBoxLayout()
