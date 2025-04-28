@@ -8,6 +8,9 @@ class SimulationWindow(QWidget):
         super().__init__()
         self.setWindowTitle("Simulation")
         self.resize(1280, 720)
+        #objects
+        self.button = QPushButton("Back")
+        #stylesheets
         
         #layout
         master_layout = QVBoxLayout()

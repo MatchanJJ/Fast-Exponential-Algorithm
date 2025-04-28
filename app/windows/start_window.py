@@ -12,10 +12,10 @@ class StartWindow(QWidget):
         self.resize(1080, 350)
         
         #create objects
-        self.label_1 = QLabel("Naive vs Fast Expo")
-        self.label_2 = QLabel("COMPARING ALGORITHM")
+        self.label_1 = QLabel("Naive vs Fast Expo", self)
+        self.label_2 = QLabel("COMPARING ALGORITHM", self)
         
-        self.button_1 = QPushButton("start")
+        self.button_1 = QPushButton("start", self)
         
         #functions
         self.button_1.clicked.connect(self.open_window)

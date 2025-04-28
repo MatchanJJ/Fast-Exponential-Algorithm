@@ -116,7 +116,7 @@ def run_simulation(start_exp=0, end_exp=1000000, step=50, base=2):
         print(f"{exp:<10} {naive_time:<15.6f} {fast_time:<15.6f} {speedup:<15.2f}x")
     
     # Saving to a JSON file
-    json_filename = f'simulation_results_{time.strftime("%Y%m%d_%H%M%S")}1.json'
+    json_filename = f'simulation_results/simulation_results_{time.strftime("%Y%m%d_%H%M%S")}1.json'
     with open(json_filename, 'w') as f:
         json.dump(json_data, f, indent=4)
     
