@@ -11,11 +11,10 @@ class startApp(QWidget):
         self.resize(1080, 350)
         
         #create objects
-        self.label_1 = QLabel("Naive vs Fast-Expo")
+        self.label_1 = QLabel("Naive vs Fast Expo")
         self.label_2 = QLabel("COMPARING ALGORITHM")
         
         self.button_1 = QPushButton("start")
-        
         
         #stylesheets
         font_id = QFontDatabase.addApplicationFont("font/IBM_Plex_Mono/IBMPlexMono-Regular.ttf")
@@ -34,12 +33,10 @@ class startApp(QWidget):
             print(f"Loaded: {font_2}")
         
         self.setObjectName("MainWidget")        
-        self.setStyleSheet('#MainWidget{background-color: #141920; border: 2px solid #333; border-radius: 15px;}')
+        self.setStyleSheet('#MainWidget {background-color: #141920; border: 2px solid #333; border-radius: 15px;}')
         
-        self.label_1.setStyleSheet(f'font-size: 64px; font-family:"{font_2}", sans-serif; color: white; font-weight: bold')
+        self.label_1.setStyleSheet(f'font-size: 64px; font-family:"{font_2}", sans-serif; color: #FFFFFF; font-weigh: bold ')
         self.label_2.setStyleSheet(f'font-size: 32px; font-family:"{font_1}", monospace; color: #C7CBD7;')
-        self.label_2.setAlignment(Qt.AlignCenter)
-
         
         self.button_1.setStyleSheet("""
                                     QPushButton {
@@ -59,15 +56,17 @@ class startApp(QWidget):
                                         background-color: #028E69;
                                     }
                                     """)
+        
+        self.label_1.setFixedHeight(64)
+        self.label_2.setFixedHeight(64)
+        self.label_2.setAlignment(Qt.AlignCenter)
+        
         #Layout
         master_layout = QVBoxLayout()
         master_layout.setAlignment(Qt.AlignCenter)
         
-        layout_1 = QVBoxLayout()        
-        layout_1.addWidget(self.label_1)
-        layout_1.addWidget(self.label_2)
-        
-        master_layout.addLayout(layout_1)
+        master_layout.addWidget(self.label_1)
+        master_layout.addWidget(self.label_2)
         master_layout.addWidget(self.button_1)
         
         self.setLayout(master_layout) 
@@ -76,7 +75,6 @@ def main():
     app = QApplication([])
     
     window = startApp()
-    
     window.show()
     app.exec_()
 
