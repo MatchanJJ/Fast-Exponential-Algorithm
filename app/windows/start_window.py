@@ -1,8 +1,9 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout
 from PyQt5.QtGui import QFontDatabase
+from simulation_window import SimulationWindow
 
-class startApp(QWidget):
+class StartWindow(QWidget):
     
     def __init__(self):
         super().__init__()
@@ -15,6 +16,9 @@ class startApp(QWidget):
         self.label_2 = QLabel("COMPARING ALGORITHM")
         
         self.button_1 = QPushButton("start")
+        
+        #functions
+        self.button_1.clicked.connect(self.open_window)
         
         #stylesheets
         font_id = QFontDatabase.addApplicationFont("font/IBM_Plex_Mono/IBMPlexMono-Regular.ttf")
@@ -35,7 +39,7 @@ class startApp(QWidget):
         self.setObjectName("MainWidget")        
         self.setStyleSheet('#MainWidget {background-color: #141920; border: 2px solid #333; border-radius: 15px;}')
         
-        self.label_1.setStyleSheet(f'font-size: 64px; font-family:"{font_2}", sans-serif; color: #FFFFFF; font-weigh: bold ')
+        self.label_1.setStyleSheet(f'font-size: 64px; font-family:"{font_2}", sans-serif; color: #FFFFFF; font-weight: bold ')
         self.label_2.setStyleSheet(f'font-size: 32px; font-family:"{font_1}", monospace; color: #C7CBD7;')
         
         self.button_1.setStyleSheet("""
@@ -71,10 +75,15 @@ class startApp(QWidget):
         
         self.setLayout(master_layout) 
         
+    def open_window(self):
+        self.second_window = SimulationWindow()
+        self.close()
+        self.second_window.show()
+                
 def main():
     app = QApplication([])
     
-    window = startApp()
+    window = StartWindow()
     window.show()
     app.exec_()
 
