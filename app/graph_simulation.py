@@ -25,7 +25,7 @@ class NaiveExponentiation:
         end = time.perf_counter()
         return end - start
 
-class Simulation:
+class GraphSimulation:
     def __init__(self):
         self.base = 2
         self.start_exponent = int(input("Enter starting exponent: "))
@@ -67,7 +67,7 @@ class Simulation:
 
 
 def main():
-    sim = Simulation()
+    sim = GraphSimulation()
     sim.graph()
 
 

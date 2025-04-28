@@ -23,7 +23,6 @@ def fast_exponentiation(base, exp):
     if exp < 0:
         base = 1 / base                         # flip the base
         exp = -exp                              # convert base to decimal
-        
     while exp > 0:                              # loop until exponent is zero
         if exp % 2 == 1:                        # if exponent is odd, multiply result by base
             result *= base
