@@ -44,7 +44,7 @@ class StartWindow(QWidget):
         
         self.button_1.setStyleSheet("""
                                     QPushButton {
-                                        background-color: #03CD97;
+                                        background-color: #07C08E;
                                         color: white;
                                         font-size: 24px;
                                         border: none;
@@ -53,11 +53,11 @@ class StartWindow(QWidget):
                                     }
                                     
                                     QPushButton:hover {
-                                        background-color: #04B284;
+                                        background-color: #08e6aa;
                                     }
                                     
                                     QPushButton:pressed {
-                                        background-color: #028E69;
+                                        background-color: #08ffcc;
                                     }
                                     """)
         
