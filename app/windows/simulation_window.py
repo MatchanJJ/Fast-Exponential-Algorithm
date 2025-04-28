@@ -1,7 +1,11 @@
 import os
+import sys
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout
 from PyQt5.QtGui import QFontDatabase, QIcon
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from components.component import BackButton
 
 class SimulationWindow(QWidget):
     
@@ -10,16 +14,16 @@ class SimulationWindow(QWidget):
         self.setWindowTitle("Simulation")
         self.resize(1280, 720)
         #objects
-        self.back_btn = QPushButton("Back")
-        
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        icon_path = os.path.normpath(os.path.join(current_dir, '..', '..', 'icons', 'arrow_left.svg'))
+        self.back_btn = BackButton()
 
-        self.back_btn.setIcon(QIcon(icon_path))
         
-        #stylesheets11
+        #stylesheets
+        self.setObjectName("MainWidget")
+        self.setStyleSheet('#MainWidget {background-color: #141920; border: 2px solid #333; border-radius: 15px;}')
         
         #layout
+        
+        
         master_layout = QVBoxLayout()
         master_layout.setAlignment(Qt.AlignCenter)
         
