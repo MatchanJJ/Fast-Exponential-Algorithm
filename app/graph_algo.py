@@ -1,29 +1,28 @@
 import time
 import matplotlib.pyplot as plt
-
 from matplotlib.ticker import FuncFormatter
 
 class FastExponentiation:
     @staticmethod
     def get_time(base, exp):
-        start = time.time()
+        start = time.perf_counter()
         result = 1
         while exp > 0:
             if exp % 2 == 1:
                 result *= base
             base *= base
             exp //= 2
-        end = time.time()
+        end = time.perf_counter()
         return end - start
 
 class NaiveExponentiation:
     @staticmethod
     def get_time(base, exp):
-        start = time.time()
+        start = time.perf_counter()
         result = 1
         for _ in range(exp):
             result *= base
-        end = time.time()
+        end = time.perf_counter()
         return end - start
 
 class Simulation:
@@ -52,11 +51,10 @@ class Simulation:
 
         # Plot shit
         plt.plot(x_values, fast_times, marker='o', label='Fast Exponentiation')
-        plt.plot(x_values, naive_times, marker='x', label='Naive Exponentiation')
+        plt.plot(x_values, naive_times, marker='o', label='Naive Exponentiation')
         
         # Formatter function to set 5 decimal places
         formatter = FuncFormatter(lambda x, _: f'{x:.5f}')
-        plt.gca().xaxis.set_major_formatter(formatter)
         plt.gca().yaxis.set_major_formatter(formatter)
         
         plt.xlabel("Exponent")
