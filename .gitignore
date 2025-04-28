@@ -1,2 +1,3 @@
 .venv/
 app/windows/__pycache__
+simulation_results/
