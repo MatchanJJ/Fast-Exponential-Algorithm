@@ -1,7 +1,12 @@
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout
 from PyQt5.QtGui import QFontDatabase
 from simulation_window import SimulationWindow
+
+import components.font_manager as fm
 
 class StartWindow(QWidget):
     
@@ -21,26 +26,14 @@ class StartWindow(QWidget):
         self.button_1.clicked.connect(self.open_window)
         
         #stylesheets
-        font_id = QFontDatabase.addApplicationFont("font/IBM_Plex_Mono/IBMPlexMono-Regular.ttf")
-        font_id_2 = QFontDatabase.addApplicationFont("font/Poppins/Poppins-Bold.ttf")
-            
-        if font_id == -1:
-            print("❌ Failed to load font") 
-        else:
-            font_1 = QFontDatabase.applicationFontFamilies(font_id)[0]
-            print(f"Loaded: {font_1}")
-            
-        if font_id_2 == -1:
-            print("❌ Failed to load font") 
-        else:
-            font_2 = QFontDatabase.applicationFontFamilies(font_id_2)[0]
-            print(f"Loaded: {font_2}")
+        ibm = fm.FontManager.get_ibm_plex(16)
+        poppins = fm.FontManager.get_poppins(16)
         
         self.setObjectName("MainWidget")        
         self.setStyleSheet('#MainWidget {background-color: #141920; border: 2px solid #333; border-radius: 15px;}')
         
-        self.label_1.setStyleSheet(f'font-size: 64px; font-family:"{font_2}", sans-serif; color: #FFFFFF; font-weight: bold ')
-        self.label_2.setStyleSheet(f'font-size: 32px; font-family:"{font_1}", monospace; color: #C7CBD7;')
+        self.label_1.setStyleSheet(f'font-size: 64px; font-family:"{poppins}", sans-serif; color: #FFFFFF; font-weight: bold ')
+        self.label_2.setStyleSheet(f'font-size: 32px; font-family:"{ibm}", monospace; color: #C7CBD7;')
         
         self.button_1.setStyleSheet("""
                                     QPushButton {

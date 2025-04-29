@@ -1,9 +1,10 @@
 
-from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QPushButton, QLineEdit
 from PyQt5.QtGui import QIcon
 import os
-
+            
 class BackButton(QPushButton):
+
     def __init__(self, parent=None):
         super().__init__("Back", parent)
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -33,6 +34,7 @@ class BackButton(QPushButton):
                             """)
         
 class StopButton(QPushButton):
+    
     def __init__(self, parent=None):
         super().__init__("", parent)
         
@@ -55,6 +57,7 @@ class StopButton(QPushButton):
                         """)
     
 class PlayButton(QPushButton):
+    
     def __init__(self, parent=None):
         super().__init__("PLAY", parent)
         
@@ -78,3 +81,11 @@ class PlayButton(QPushButton):
                                 background-color: #08ffcc;
                             }
                         """)
+
+class InputBox(QLineEdit):
+    
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setFixedSize(90, 46)
+        
+        # add style
