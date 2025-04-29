@@ -51,7 +51,7 @@ class GraphSimulation:
 
         # Plot shit
         plt.plot(x_values, fast_times, marker='o', label='Fast Exponentiation')
-        plt.plot(x_values, naive_times, marker='o', label='Naive Exponentiation')
+        plt.plot(x_values, naive_times, marker='x', label='Naive Exponentiation')
         
         # Formatter function to set 5 decimal places
         formatter = FuncFormatter(lambda x, _: f'{x:.5f}')
