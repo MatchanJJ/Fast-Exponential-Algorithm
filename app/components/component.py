@@ -58,7 +58,7 @@ class PlayButton(QPushButton):
     def __init__(self, parent=None):
         super().__init__("PLAY", parent)
         
-        self.setFixedHeight(46)
+        self.setFixedSize(90, 46)
         self.setStyleSheet("""
                             QPushButton {
                                 background-color: #07C08E;

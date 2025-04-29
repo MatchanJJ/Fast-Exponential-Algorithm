@@ -13,10 +13,6 @@ class SimulationWindow(QWidget):
         super().__init__()
         self.setWindowTitle("Simulation")
         self.resize(1280, 720)
-        #objects
-        self.back_btn = ct.BackButton()
-        self.stop_btn = ct.StopButton()
-        self.play_btn = ct.PlayButton()
         
         #stylesheets
         self.setObjectName("MainWidget")
@@ -26,28 +22,52 @@ class SimulationWindow(QWidget):
         master_layout = QVBoxLayout()
         master_layout.setAlignment(Qt.AlignCenter)
         
-        # first row layout
-        self.row_1 = QHBoxLayout()
-        
-        self.btn_row = QHBoxLayout()
-        self.btn_row.addWidget(self.stop_btn)
-        self.btn_row.addWidget(self.play_btn)
-        
-        spacer = QSpacerItem(900, 0, QSizePolicy.Fixed, QSizePolicy.Expanding)
-        
-        self.row_1.addWidget(self.back_btn)
-        self.row_1.addItem(spacer)
-        self.row_1.addLayout(self.btn_row)
-        
-        
+        # initialize rows
+        self.row_1 = QHBoxLayout()        
         self.row_2 = QHBoxLayout()
         self.row_3 = QHBoxLayout()
+        
+        #add ui components
+        self.first_row()
+        self.second_row()
         
         master_layout.addLayout(self.row_1)
         master_layout.addLayout(self.row_2)
         master_layout.addLayout(self.row_3)
         
         self.setLayout(master_layout)
+        
+    def first_row(self):
+        widget = QWidget()
+        widget.setFixedWidth(1200)
+        # add layout for the widget
+        widget_layout = QHBoxLayout(widget)
+        
+        #init objects
+        back_btn = ct.BackButton()
+        stop_btn = ct.StopButton()
+        play_btn = ct.PlayButton()
+        
+        btn_row = QHBoxLayout()
+        btn_row.addWidget(stop_btn)
+        btn_row.addWidget(play_btn)
+        
+        spacer = QSpacerItem(950, 0, QSizePolicy.Fixed, QSizePolicy.Expanding)
+        
+        widget_layout.addWidget(back_btn)
+        widget_layout.addItem(spacer)
+        widget_layout.addLayout(btn_row)
+        
+        self.row_1.addWidget(widget)
+    
+    def second_row(self):
+        widget = QWidget()
+        widget.setFixedWidth(1200)
+        widget_layout = QHBoxLayout(widget)
+        
+        #init objects to do
+    
+    
         
 def main():
     app = QApplication([])
