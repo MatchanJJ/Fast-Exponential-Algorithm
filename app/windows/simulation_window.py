@@ -58,7 +58,7 @@ class SimulationWindow(QWidget):
         stop_btn = ct.StopButton()
         play_btn = ct.PlayButton()  
         
-        btn_row = QHBoxLayout()
+        btn_row = QHBoxLayout() 
         btn_row.addWidget(stop_btn)
         btn_row.addWidget(play_btn)
         
@@ -74,8 +74,8 @@ class SimulationWindow(QWidget):
         widget = QWidget()
         widget.setFixedWidth(1200)
         widget.setMinimumHeight(100)
-        
         widget_layout = QHBoxLayout(widget)
+        
         widget.setObjectName("Widget")
         widget.setStyleSheet("#Widget {background-color: #313744; border: 0; border-radius: 15px}")
         
@@ -83,17 +83,27 @@ class SimulationWindow(QWidget):
         label_title = QLabel("Input")
         label_base = QLabel("Base = 2")
         
-        label_title.setFont(self.poppins)
+        label_title.setStyleSheet(f'font-size: 20px; font-family:"{self.poppins}", sans-serif; color: #FFFFFF; font-weight: bold;')
+        label_base.setStyleSheet(f'font-size: 16px; font-family:"{self.poppins}", sans-serif; color: #FFFFFF; font-weight: bold;')
         
         v = QVBoxLayout()
         v.addWidget(label_title)
         v.addWidget(label_base)
         
-        start_input = ct.InputBox()
+        start_input = ct.InputBox("Start Exponent")
+        end_input = ct.InputBox("End Exponent")
+        step_input = ct.InputBox("Step")
         
+        h = QHBoxLayout()
+        h.addWidget(start_input)
+        h.addWidget(end_input)
+        h.addWidget(step_input)
         
         widget_layout.addLayout(v)
-        widget_layout.addWidget(start_input)
+        widget_layout.addLayout(h)
+        
+        widget_layout.addStretch(1)
+        widget_layout.setSpacing(35)
         
         self.row_2.addWidget(widget)
     
