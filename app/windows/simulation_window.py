@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QScrollArea
 from PyQt5.QtGui import QFontDatabase
 import components.component as ct
 import components.font_manager as fm
@@ -33,11 +33,14 @@ class SimulationWindow(QWidget):
         #add ui components
         self.first_row()
         self.second_row()
+        self.third_row()
         
         master_layout.addLayout(self.row_1)
         master_layout.addLayout(self.row_2)
         master_layout.addLayout(self.row_3)
-
+        master_layout.setContentsMargins(0,50,0,0)
+        master_layout.setSpacing(15)
+        
         master_layout.addStretch(1)
         
         self.setLayout(master_layout)
@@ -61,6 +64,7 @@ class SimulationWindow(QWidget):
         btn_row = QHBoxLayout() 
         btn_row.addWidget(stop_btn)
         btn_row.addWidget(play_btn)
+
         
         spacer = QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
         
@@ -73,7 +77,7 @@ class SimulationWindow(QWidget):
     def second_row(self):
         widget = QWidget()
         widget.setFixedWidth(1200)
-        widget.setMinimumHeight(100)
+        widget.setMinimumHeight(85)
         widget_layout = QHBoxLayout(widget)
         
         widget.setObjectName("Widget")
@@ -84,11 +88,13 @@ class SimulationWindow(QWidget):
         label_base = QLabel("Base = 2")
         
         label_title.setStyleSheet(f'font-size: 20px; font-family:"{self.poppins}", sans-serif; color: #FFFFFF; font-weight: bold;')
-        label_base.setStyleSheet(f'font-size: 16px; font-family:"{self.poppins}", sans-serif; color: #FFFFFF; font-weight: bold;')
+        label_base.setStyleSheet(f'font-size: 14px; font-family:"{self.poppins}", sans-serif; color: #FFFFFF; font-weight: bold;')
         
         v = QVBoxLayout()
         v.addWidget(label_title)
         v.addWidget(label_base)
+        
+        v.setSpacing(4)
         
         start_input = ct.InputBox("Start Exponent")
         end_input = ct.InputBox("End Exponent")
@@ -104,10 +110,28 @@ class SimulationWindow(QWidget):
         
         widget_layout.addStretch(1)
         widget_layout.setSpacing(35)
+        widget_layout.setContentsMargins(25,0,25,0)
         
         self.row_2.addWidget(widget)
     
-    
+    def third_row(self):
+        widget = QWidget()
+        widget_layout = QHBoxLayout(widget)
+        widget.setObjectName("Widget")
+        
+        #add to scroll area
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setWidget(widget)
+        scroll.setFixedWidth(1200)
+        scroll.setMinimumHeight(475)
+        
+        scroll.setObjectName("Scroll")
+        scroll.setStyleSheet("#Scroll, #Widget {background-color: #313744; border: 0; border-radius: 15px}")
+        scroll.setContentsMargins(0,0,0,0)
+        
+        widget_layout.setContentsMargins(0,0,0,0)
+        self.row_3.addWidget(scroll)
         
 def main():
     app = QApplication([])

@@ -17,12 +17,12 @@ class BackButton(QPushButton):
         # set font
         self.poppins = fm.FontManager.get_poppins(16)
         
-        self.setFixedHeight(50)
+        self.setFixedHeight(40)
         self.setStyleSheet(f"""
                             QPushButton {{
                                 background-color: #2a2f3c;
                                 border: none;
-                                border-radius: 24px;
+                                border-radius: 20px;
                                 padding: 10px 20px;
                                 
                                 color: white;
@@ -45,12 +45,12 @@ class StopButton(QPushButton):
     def __init__(self, parent=None):
         super().__init__("", parent)
         
-        self.setFixedSize(46,46)
+        self.setFixedSize(40,40)
         self.setStyleSheet("""
                             QPushButton {
                                 background-color: #C3330A;
                                 border: 0;
-                                border-radius: 23px;
+                                border-radius: 20px;
                                 padding: 10px 20px;
                             }
                             
@@ -70,12 +70,12 @@ class PlayButton(QPushButton):
         
         self.poppins = fm.FontManager.get_poppins(16)
         
-        self.setFixedSize(90, 46)
+        self.setFixedSize(120, 40)
         self.setStyleSheet(f"""
                             QPushButton {{
                                 background-color: #07C08E;
                                 border: 0;
-                                border-radius: 23px;
+                                border-radius: 20px;
                                 padding: 10px 24px;
                                 
                                 color: white;
@@ -107,12 +107,12 @@ class InputBox(QWidget):
         
         self.text_field = QLineEdit()
         self.text_field.setFixedWidth(150)
-        self.text_field.setFixedHeight(46)
+        self.text_field.setFixedHeight(40)
         
         self.label = QLabel(text)
         self.label.setMinimumWidth(10)
         self.label.setMaximumWidth(150)
-        self.label.setFixedHeight(46)
+        self.label.setFixedHeight(40)
         
         self.label.setStyleSheet(f'font-size: 18px; font-family:"{self.poppins}", sans-serif; color: #FFFFFF;')
         self.text_field.setStyleSheet(f"""
