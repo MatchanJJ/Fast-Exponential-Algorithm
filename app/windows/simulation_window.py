@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLay
 from PyQt5.QtGui import QFontDatabase
 import components.component as ct
 import components.font_manager as fm
+import components.graph as graph
 
 class SimulationWindow(QWidget):
     
@@ -117,7 +118,6 @@ class SimulationWindow(QWidget):
     def third_row(self):
         widget = QWidget()
         widget_layout = QHBoxLayout(widget)
-        widget.setObjectName("Widget")
         
         #add to scroll area
         scroll = QScrollArea()
@@ -126,12 +126,16 @@ class SimulationWindow(QWidget):
         scroll.setFixedWidth(1200)
         scroll.setMinimumHeight(475)
         
+        widget.setObjectName("Widget")
         scroll.setObjectName("Scroll")
         scroll.setStyleSheet("#Scroll, #Widget {background-color: #313744; border: 0; border-radius: 15px}")
         scroll.setContentsMargins(0,0,0,0)
-        
         widget_layout.setContentsMargins(0,0,0,0)
+        
+        widget_layout.addWidget(graph.GraphSimulation(1,100,1))
+        
         self.row_3.addWidget(scroll)
+        
         
 def main():
     app = QApplication([])
