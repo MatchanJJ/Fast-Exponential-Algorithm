@@ -58,7 +58,7 @@ class GraphSimulation(QWidget):
         layout = QVBoxLayout()
         layout.addWidget(self.canvas)
         self.setLayout(layout)
-
+        
         # config
         self.base = 2
         self.start_exponent = start
@@ -95,9 +95,11 @@ class GraphSimulation(QWidget):
         self.ax.tick_params(axis='y', colors='#959cae')
 
         for spine in ['bottom', 'top', 'left', 'right']:
-            self.ax.spines[spine].set_color('white')
-
+            self.ax.spines[spine].set_visible(False)
+        
         self.fig.tight_layout()
+        self.fig.subplots_adjust(left=0.1)
+        
 
     def update_plot(self, frame):
         if self.current_exp > self.end_exponent:
@@ -117,10 +119,13 @@ class GraphSimulation(QWidget):
         self.ax.autoscale_view()
 
         self.current_exp += self.step
+        self.fig.tight_layout()
         self.canvas.draw()
+        
+        
 
     def animate_graph(self):
-        self.animation = FuncAnimation(self.fig, self.update_plot, interval=50)
+        self.animation = FuncAnimation(self.fig, self.update_plot, interval=5)
 
 
 def main():

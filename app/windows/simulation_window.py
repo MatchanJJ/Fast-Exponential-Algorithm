@@ -9,135 +9,122 @@ import components.font_manager as fm
 import components.graph as graph
 
 class SimulationWindow(QWidget):
-    
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Simulation")
         self.resize(1280, 820)
-        
-        # stylesheets
+
         self.setObjectName("MainWidget")
         self.setStyleSheet('#MainWidget {background-color: #141920; border: 2px solid #333; border-radius: 15px;}')
-        
-        # get font
-        self.poppins = fm.FontManager.get_poppins(16)
-        
-        #layout
-        master_layout = QVBoxLayout()
-        master_layout.setAlignment(Qt.AlignCenter)
-        
-        # initialize rows
-        self.row_1 = QHBoxLayout()        
-        self.row_2 = QHBoxLayout()
-        self.row_3 = QHBoxLayout()
-        
-        #add ui components
-        self.first_row()
-        self.second_row()
-        self.third_row()
-        
-        master_layout.addLayout(self.row_1)
-        master_layout.addLayout(self.row_2)
-        master_layout.addLayout(self.row_3)
-        master_layout.setContentsMargins(0,50,0,0)
-        master_layout.setSpacing(15)
-        
-        master_layout.addStretch(1)
-        
-        self.setLayout(master_layout)
-        
-    def first_row(self):
-        widget = QWidget()
-        widget.setFixedWidth(1200)
-        
-        # add layout for the widget
-        widget_layout = QHBoxLayout(widget)
-        widget_layout.setContentsMargins(0, 0, 0, 0)
-        
-        #init objects
-        back_btn = ct.BackButton()
-    
-        spacer = QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
-        
-        widget_layout.addWidget(back_btn)
-        widget_layout.addItem(spacer)
-        
-        self.row_1.addWidget(widget)
-    
-    def second_row(self):
-        widget = QWidget()
-        widget.setFixedWidth(1200)
-        widget.setMinimumHeight(85)
-        widget_layout = QHBoxLayout(widget)
-        
-        widget.setObjectName("Widget")
-        widget.setStyleSheet("#Widget {background-color: #313744; border: 0; border-radius: 15px}")
-        
-        #init objects to do
-        label_title = QLabel("Input")
-        label_base = QLabel("Base = 2")
-        
-        label_title.setStyleSheet(f'font-size: 20px; font-family:"{self.poppins}", sans-serif; color: #FFFFFF; font-weight: bold;')
-        label_base.setStyleSheet(f'font-size: 14px; font-family:"{self.poppins}", sans-serif; color: #FFFFFF; font-weight: bold;')
 
-        stop_btn = ct.StopButton()
-        play_btn = ct.PlayButton()  
+        self.poppins = fm.FontManager.get_poppins(16)
+
+        self.setup_ui()
+
+    def setup_ui(self):
+        layout = QVBoxLayout()
+        layout.setAlignment(Qt.AlignCenter)
+        layout.setContentsMargins(0, 50, 0, 0)
+        layout.setSpacing(15)
+
+        layout.addLayout(self.create_top_bar())
+        layout.addLayout(self.create_input_section())
+        layout.addLayout(self.create_graph_area())
+        layout.addStretch(1)
+
+        self.setLayout(layout)
+
+    def create_top_bar(self):
+        row = QHBoxLayout()
+        widget = self.wrap_widget(QHBoxLayout(), fixed_width=1200)
+
+        back_btn = ct.BackButton()
+        spacer = QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        widget.layout().addWidget(back_btn)
+        widget.layout().addItem(spacer)
+
+        row.addWidget(widget)
+        return row
+
+    def create_input_section(self):
+        row = QHBoxLayout()
+        layout = QHBoxLayout()
+        widget = self.wrap_widget(layout, fixed_width=1200, min_height=85, object_name="Widget",
+                                  stylesheet="#Widget {background-color: #313744; border: 0; border-radius: 4px}")
+
+        label_title = self.styled_label("Input", 20)
+        label_base = self.styled_label("Base = 2", 14)
         
-        btn_row = QHBoxLayout() 
-        btn_row.addWidget(stop_btn)
-        btn_row.addWidget(play_btn)
-        
-        v = QVBoxLayout()
-        v.addWidget(label_title)
-        v.addWidget(label_base)
-        
-        v.setSpacing(4)
-        
-        start_input = ct.InputBox("Start Exponent")
-        end_input = ct.InputBox("End Exponent")
-        step_input = ct.InputBox("Step")
-        
-        h = QHBoxLayout()
-        h.addWidget(start_input)
-        h.addWidget(end_input)
-        h.addWidget(step_input)
-        
-        widget_layout.addLayout(v)
-        widget_layout.addLayout(h)
-        widget_layout.addLayout(btn_row)
-        
-        widget_layout.addStretch(1)
-        widget_layout.setSpacing(35)
-        widget_layout.setContentsMargins(25,0,25,0)
-        
-        self.row_2.addWidget(widget)
-    
-    def third_row(self):
-        widget = QWidget()
-        widget_layout = QHBoxLayout(widget)
-        
-        # Set layout for widget
-        widget.setLayout(widget_layout)
-        
-        # Add to scroll area
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
-        scroll.setWidget(widget)
-        scroll.setFixedWidth(1200)
-        scroll.setFixedHeight(575)
-        
-        widget.setObjectName("Widget")
-        scroll.setObjectName("Scroll")
-        scroll.setStyleSheet("#Scroll, #Widget {background-color: #313744; border: 0; border-radius: 15px}")
-        scroll.setContentsMargins(0, 0, 0, 0)
-        widget_layout.setContentsMargins(0, 0, 0, 0)
-        
-        # Ensure the graph widget is sized properly
+        input_layout = QHBoxLayout()
+        input_layout.addWidget(ct.InputBox("Start Exponent"))
+        input_layout.addWidget(ct.InputBox("End Exponent"))
+        input_layout.addWidget(ct.InputBox("Step"))
+
+        buttons = QHBoxLayout()
+        buttons.addWidget(ct.StopButton())
+        buttons.addWidget(ct.PlayButton())
+
+        label_col = QVBoxLayout()
+        label_col.addWidget(label_title)
+        label_col.addWidget(label_base)
+        label_col.setSpacing(4)
+
+        layout.addLayout(label_col)
+        layout.addLayout(input_layout)
+        layout.addLayout(buttons)
+        layout.addStretch(1)
+        layout.setSpacing(35)
+        layout.setContentsMargins(25, 0, 25, 0)
+
+        row.addWidget(widget)
+        return row
+
+    def create_graph_area(self):
+        # to fix
+        row = QHBoxLayout()
+
         graph_widget = graph.GraphSimulation(1, 10000, 1)
-        widget_layout.addWidget(graph_widget)
-        
-        # Add the scroll area to row_3
-        self.row_3.addWidget(scroll)
+
+        container_layout = QHBoxLayout()
+        container_layout.setContentsMargins(0, 0, 0, 0)
+
+        container = QWidget()
+        container.setLayout(container_layout)
+        container.setFixedWidth(1200)
+        container.setFixedHeight(575)
+        container.setObjectName("Widget") 
+        container.setStyleSheet("""
+            #Widget {
+                background-color: #313744;  
+                border: 0;
+                border-radius: 4px;
+            }
+        """)
+
+        container_layout.addWidget(graph_widget)
+
+        row.setContentsMargins(0, 0, 0, 0)
+        row.addWidget(container)
+        return row
+
+    def styled_label(self, text, size):
+        label = QLabel(text)
+        label.setStyleSheet(
+            f'font-size: {size}px; font-family:"{self.poppins}", sans-serif; color: #FFFFFF; font-weight: bold;'
+        )
+        return label
+
+    def wrap_widget(self, layout, fixed_width=None, min_height=None, object_name=None, stylesheet=None):
+        widget = QWidget()
+        widget.setLayout(layout)
+        if fixed_width: widget.setFixedWidth(fixed_width)
+        if min_height: widget.setMinimumHeight(min_height)
+        if object_name: widget.setObjectName(object_name)
+        if stylesheet: widget.setStyleSheet(stylesheet)
+        layout.setContentsMargins(0, 0, 0, 0)
+        return widget
+
         
         
 def main():
