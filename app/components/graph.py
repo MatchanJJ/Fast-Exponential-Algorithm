@@ -2,9 +2,21 @@ import time
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QMainWindow
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.animation import FuncAnimation
 
 class FastExponentiation:
-    @staticmethod
+    def get_operations(base, exp):
+        operations = 0  # Initialize operation counter
+        result = 1
+        while exp > 0:
+            if exp % 2 == 1:
+                result *= base
+                operations += 1  # Count multiplication
+            base *= base
+            operations += 1  # Count squaring
+            exp //= 2
+        return operations
+    
     def get_time(base, exp):
         start = time.perf_counter()
         result = 1
@@ -17,7 +29,14 @@ class FastExponentiation:
         return end - start
 
 class NaiveExponentiation:
-    @staticmethod
+    def get_operations(base, exp):
+        operations = 0  # Initialize operation counter
+        result = 1
+        for _ in range(exp):
+            result *= base
+            operations += 1  # Count multiplication
+        return operations
+    
     def get_time(base, exp):
         start = time.perf_counter()
         result = 1
@@ -30,75 +49,79 @@ class GraphSimulation(QWidget):
     def __init__(self, start, end, step, parent=None):
         super().__init__(parent)
         print("running GraphSimulation")
-        
+
         # create canvas and layout
         self.fig = Figure(facecolor="#272b34")
         self.canvas = FigureCanvas(self.fig)
         self.ax = self.fig.add_subplot(111)
-        
+
         layout = QVBoxLayout()
         layout.addWidget(self.canvas)
         self.setLayout(layout)
-        
+
         # config
         self.base = 2
         self.start_exponent = start
         self.end_exponent = end
         self.step = step
-        
-        # call
-        self.graph()
 
-    def graph(self):
-        x_values = []
-        fast_times = []
-        naive_times = []
+        # initialize plot elements
+        self.x_values = []
+        self.fast_times = []
+        self.naive_times = []
+        self.current_exp = self.start_exponent
 
-        exponent = self.start_exponent
-        
+        self.fast_line, = self.ax.plot([], [], label="Fast-Expo", color="#63dc93")
+        self.naive_line, = self.ax.plot([], [], label="Naive", color="#ff4b4c")
 
-        while exponent <= self.end_exponent:
-            fast_time = FastExponentiation.get_time(self.base, exponent)
-            naive_time = NaiveExponentiation.get_time(self.base, exponent)
+        self.setup_plot()
+        self.animate_graph()
 
-            x_values.append(exponent)
-            fast_times.append(fast_time)
-            naive_times.append(naive_time)
-
-            exponent += self.step
-
-        
-        # add subplot, 1 row, 1 column, 1st plot        
-        self.ax.plot(x_values, fast_times, label="Fast-Expo", color="#63dc93")
-        self.ax.plot(x_values, naive_times, label="Naive", color="#ff4b4c")
+    def setup_plot(self):
         self.ax.set_xlabel("Exponent", color='#959cae')
         self.ax.set_ylabel("Runtime (seconds)", color='#959cae')
         self.ax.set_title("Fast vs Naive Exponentiation Simulation", color='white', fontweight='bold')
         self.ax.set_facecolor('#272b34')
+
         legend = self.ax.legend()
+        legend.get_frame().set_facecolor('#3a3e47')
+        legend.get_frame().set_edgecolor('#3a3e47')
 
-        legend.get_frame().set_facecolor('#3a3e47')  
-        legend.get_frame().set_edgecolor('#3a3e47')    
-
-        # Set text color
         for text in legend.get_texts():
             text.set_color('white')
-        
+
         self.ax.grid(False)
-        
-        # Set tick label colors (numbers on self.axes)
         self.ax.tick_params(axis='x', colors='#959cae')
         self.ax.tick_params(axis='y', colors='#959cae')
 
-        # Set self.axes edge (border) color
-        self.ax.spines['bottom'].set_color('white')
-        self.ax.spines['top'].set_color('white')
-        self.ax.spines['left'].set_color('white')
-        self.ax.spines['right'].set_color('white')
+        for spine in ['bottom', 'top', 'left', 'right']:
+            self.ax.spines[spine].set_color('white')
 
         self.fig.tight_layout()
-        print("Draw Canvas")
+
+    def update_plot(self, frame):
+        if self.current_exp > self.end_exponent:
+            return
+
+        fast_time = FastExponentiation.get_time(self.base, self.current_exp)
+        naive_time = NaiveExponentiation.get_time(self.base, self.current_exp)
+
+        self.x_values.append(self.current_exp)
+        self.fast_times.append(fast_time)
+        self.naive_times.append(naive_time)
+
+        self.fast_line.set_data(self.x_values, self.fast_times)
+        self.naive_line.set_data(self.x_values, self.naive_times)
+
+        self.ax.relim()
+        self.ax.autoscale_view()
+
+        self.current_exp += self.step
         self.canvas.draw()
+
+    def animate_graph(self):
+        self.animation = FuncAnimation(self.fig, self.update_plot, interval=50)
+
 
 def main():
     app = QApplication([])
