@@ -32,8 +32,9 @@ class GraphSimulation(QWidget):
         print("running GraphSimulation")
         
         # create canvas and layout
-        self.fig = Figure()
+        self.fig = Figure(facecolor="#272b34")
         self.canvas = FigureCanvas(self.fig)
+        self.ax = self.fig.add_subplot(111)
         
         layout = QVBoxLayout()
         layout.addWidget(self.canvas)
@@ -67,20 +68,37 @@ class GraphSimulation(QWidget):
             exponent += self.step
 
         
-        # add subplot, 1 row, 1 column, 1st plot
-        ax = self.fig.add_subplot(111)
+        # add subplot, 1 row, 1 column, 1st plot        
+        self.ax.plot(x_values, fast_times, label="Fast-Expo", color="#63dc93")
+        self.ax.plot(x_values, naive_times, label="Naive", color="#ff4b4c")
+        self.ax.set_xlabel("Exponent", color='#959cae')
+        self.ax.set_ylabel("Runtime (seconds)", color='#959cae')
+        self.ax.set_title("Fast vs Naive Exponentiation Simulation", color='white', fontweight='bold')
+        self.ax.set_facecolor('#272b34')
+        legend = self.ax.legend()
+
+        legend.get_frame().set_facecolor('#3a3e47')  
+        legend.get_frame().set_edgecolor('#3a3e47')    
+
+        # Set text color
+        for text in legend.get_texts():
+            text.set_color('white')
         
-        ax.plot(x_values, fast_times, label="Fast-Expo", color="blue")
-        ax.plot(x_values, naive_times, label="Naive", color="orange")
-        ax.set_xlabel("Exponent")
-        ax.set_ylabel("Runtime (seconds)")
-        ax.set_title("Fast vs Naive Exponentiation Simulation")
-        ax.legend()
-        ax.grid(True)
+        self.ax.grid(False)
+        
+        # Set tick label colors (numbers on self.axes)
+        self.ax.tick_params(axis='x', colors='#959cae')
+        self.ax.tick_params(axis='y', colors='#959cae')
+
+        # Set self.axes edge (border) color
+        self.ax.spines['bottom'].set_color('white')
+        self.ax.spines['top'].set_color('white')
+        self.ax.spines['left'].set_color('white')
+        self.ax.spines['right'].set_color('white')
 
         self.fig.tight_layout()
-        self.canvas.draw()
         print("Draw Canvas")
+        self.canvas.draw()
 
 def main():
     app = QApplication([])

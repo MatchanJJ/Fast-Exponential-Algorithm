@@ -13,7 +13,7 @@ class SimulationWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Simulation")
-        self.resize(1280, 720)
+        self.resize(1280, 820)
         
         # stylesheets
         self.setObjectName("MainWidget")
@@ -50,28 +50,17 @@ class SimulationWindow(QWidget):
         widget = QWidget()
         widget.setFixedWidth(1200)
         
-        #widget.setObjectName("Widget")
-        #widget.setStyleSheet("#Widget {background-color: #313744; border: 0; border-radius: 30px}")
-        
         # add layout for the widget
         widget_layout = QHBoxLayout(widget)
         widget_layout.setContentsMargins(0, 0, 0, 0)
         
         #init objects
         back_btn = ct.BackButton()
-        stop_btn = ct.StopButton()
-        play_btn = ct.PlayButton()  
-        
-        btn_row = QHBoxLayout() 
-        btn_row.addWidget(stop_btn)
-        btn_row.addWidget(play_btn)
-
-        
+    
         spacer = QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
         
         widget_layout.addWidget(back_btn)
         widget_layout.addItem(spacer)
-        widget_layout.addLayout(btn_row)
         
         self.row_1.addWidget(widget)
     
@@ -90,6 +79,13 @@ class SimulationWindow(QWidget):
         
         label_title.setStyleSheet(f'font-size: 20px; font-family:"{self.poppins}", sans-serif; color: #FFFFFF; font-weight: bold;')
         label_base.setStyleSheet(f'font-size: 14px; font-family:"{self.poppins}", sans-serif; color: #FFFFFF; font-weight: bold;')
+
+        stop_btn = ct.StopButton()
+        play_btn = ct.PlayButton()  
+        
+        btn_row = QHBoxLayout() 
+        btn_row.addWidget(stop_btn)
+        btn_row.addWidget(play_btn)
         
         v = QVBoxLayout()
         v.addWidget(label_title)
@@ -108,6 +104,7 @@ class SimulationWindow(QWidget):
         
         widget_layout.addLayout(v)
         widget_layout.addLayout(h)
+        widget_layout.addLayout(btn_row)
         
         widget_layout.addStretch(1)
         widget_layout.setSpacing(35)
@@ -119,21 +116,27 @@ class SimulationWindow(QWidget):
         widget = QWidget()
         widget_layout = QHBoxLayout(widget)
         
-        #add to scroll area
+        # Set layout for widget
+        widget.setLayout(widget_layout)
+        
+        # Add to scroll area
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setWidget(widget)
         scroll.setFixedWidth(1200)
-        scroll.setMinimumHeight(475)
+        scroll.setFixedHeight(575)
         
         widget.setObjectName("Widget")
         scroll.setObjectName("Scroll")
         scroll.setStyleSheet("#Scroll, #Widget {background-color: #313744; border: 0; border-radius: 15px}")
-        scroll.setContentsMargins(0,0,0,0)
-        widget_layout.setContentsMargins(0,0,0,0)
+        scroll.setContentsMargins(0, 0, 0, 0)
+        widget_layout.setContentsMargins(0, 0, 0, 0)
         
-        widget_layout.addWidget(graph.GraphSimulation(1,100,1))
+        # Ensure the graph widget is sized properly
+        graph_widget = graph.GraphSimulation(1, 10000, 1)
+        widget_layout.addWidget(graph_widget)
         
+        # Add the scroll area to row_3
         self.row_3.addWidget(scroll)
         
         
