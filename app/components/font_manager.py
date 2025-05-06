@@ -15,7 +15,6 @@ class FontManager:
         
         family = QFontDatabase.applicationFontFamilies(font_id)[0]
         FontManager._fonts[path] = family
-        print(f"✅ Loaded font: {family}")
         return family
 
     @classmethod

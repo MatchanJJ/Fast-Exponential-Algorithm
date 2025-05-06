@@ -43,15 +43,20 @@ class BackButton(QPushButton):
 class StopButton(QPushButton):
     
     def __init__(self, parent=None):
-        super().__init__("", parent)
+        super().__init__("Stop", parent)
         
-        self.setFixedSize(40,40)
+        self.setFixedSize(110, 38)
         self.setStyleSheet("""
                             QPushButton {
-                                background-color: #C3330A;
-                                border: 0;
-                                border-radius: 20px;
+                                background-color: #443531;
+                                border: 2 solid #C3330A;
+                                border-radius: 18px;
                                 padding: 10px 20px;
+                                
+                                color: white;
+                                font-family:'{self.poppins}';
+                                font-size: 15px;
+                                font-weight: bold;
                             }
                             
                             QPushButton:hover {
@@ -66,21 +71,21 @@ class StopButton(QPushButton):
 class PlayButton(QPushButton):
     
     def __init__(self, parent=None):
-        super().__init__("PLAY", parent)
+        super().__init__("Play", parent)
         
         self.poppins = fm.FontManager.get_poppins(16)
         
-        self.setFixedSize(120, 40)
+        self.setFixedSize(110, 38)
         self.setStyleSheet(f"""
                             QPushButton {{
-                                background-color: #07C08E;
-                                border: 0;
-                                border-radius: 20px;
+                                background-color: #2a4a3d;
+                                border: 2 solid #03CD97;
+                                border-radius: 18px;
                                 padding: 10px 24px;
                                 
                                 color: white;
                                 font-family:'{self.poppins}';
-                                font-size: 16px;
+                                font-size: 15px;
                                 font-weight: bold;
                             }}
                             

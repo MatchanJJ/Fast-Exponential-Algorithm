@@ -80,6 +80,8 @@ class SimulationWindow(QWidget):
         
         buttons.addWidget(self.stop_button)
         buttons.addWidget(self.play_button)
+        buttons.setContentsMargins(0,10,0,0)
+        buttons.setSpacing(18)
 
         label_col = QHBoxLayout()
         label_col.addWidget(label_title)
@@ -88,10 +90,10 @@ class SimulationWindow(QWidget):
 
         layout.addLayout(label_col)
         layout.addLayout(input_layout)
-        layout.addLayout(buttons)
         layout.addStretch(1)
+        layout.addLayout(buttons)
         layout.setSpacing(35)
-        layout.setContentsMargins(25, 0, 0, 0)
+        layout.setContentsMargins(25, 0, 25, 0)
 
         row.addWidget(widget)
         return row
@@ -138,24 +140,21 @@ class SimulationWindow(QWidget):
         end = int(self.end_input.get_input())
         step = int(self.step_input.get_input())
         mode = self.mode_input.get_input()
-        print(start, end, step)
 
         # Remove old graph widget if exists
         if hasattr(self, 'graph_widget'):
             self.graph_widget.clear_animation()
             self.stacked.removeWidget(self.graph_widget)
             self.graph_widget.deleteLater()
-
+        
         # Create new graph
         self.graph_widget = graph.GraphSimulation(start, end, step, mode)
         self.stacked.addWidget(self.graph_widget)
         self.stacked.setCurrentWidget(self.graph_widget)
     
     def on_stop(self):
-        print('Stopping animation...')
         if hasattr(self.graph_widget, 'animation') and self.graph_widget.animation:
             self.graph_widget.animation.event_source.stop()
-            print('Animation stopped.')
     # helper classes    
     def styled_label(self, text, size):
         label = QLabel(text)

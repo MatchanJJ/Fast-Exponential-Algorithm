@@ -4,6 +4,7 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.animation import FuncAnimation
 from PyQt5.QtCore import Qt
+from decimal import Decimal
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, message="Animation was deleted.*")
 
@@ -13,7 +14,11 @@ class FastExponentiation:
     
     def get_operations(base, exp):
         operations = 0  # Initialize operation counter
-        result = 1
+        result = Decimal(1)                         # init
+        base = Decimal(base) 
+        if exp < 0:
+            base = 1 / base                         # flip the base
+            exp = -exp 
         while exp > 0:
             if exp % 2 == 1:
                 result *= base
@@ -23,10 +28,13 @@ class FastExponentiation:
             exp //= 2
         return operations
     
-    
     def get_time(base, exp):
         start = time.perf_counter()
-        result = 1
+        result = Decimal(1)                         # init
+        base = Decimal(base) 
+        if exp < 0:
+            base = 1 / base                         # flip the base
+            exp = -exp
         while exp > 0:
             if exp % 2 == 1:
                 result *= base
@@ -38,17 +46,28 @@ class FastExponentiation:
 class NaiveExponentiation:
     
     def get_operations(base, exp):
-        operations = 0  # Initialize operation counter
-        result = 1
+        operations = 0  
+        result = Decimal(1)                       
+        base = Decimal(base)   
+        
+        if exp < 0:
+            base = 1 / base                        
+            exp = -exp
         for _ in range(exp):
             result *= base
-            operations += 1  # Count multiplication
+            operations += 1  
         return operations
     
     
     def get_time(base, exp):
         start = time.perf_counter()
-        result = 1
+        result = Decimal(1)                         
+        base = Decimal(base)
+        
+        if exp < 0:
+            base = 1 / base                         
+            exp = -exp
+            
         for _ in range(exp):
             result *= base
         end = time.perf_counter()
@@ -151,7 +170,7 @@ class GraphSimulation(QWidget):
         if(self.end_exponent > 1000):    
             self.animation = FuncAnimation(self.fig, self.update_plot, interval=1)
         else:
-            self.animation = FuncAnimation(self.fig, self.update_plot, interval=25)
+            self.animation = FuncAnimation(self.fig, self.update_plot, interval=5)
         
     def replot_graph(self, start, end, step):
         self.clear_animation()
@@ -187,7 +206,7 @@ class GraphSimulation(QWidget):
 
 def main():
     app = QApplication([])
-    sim = GraphSimulation(1, 1000, 1)
+    sim = GraphSimulation(-1, -1000, 1, 'Operation')
 
     # Create a QMainWindow and set the GraphSimulation as its central widget
     window = QMainWindow()
