@@ -139,8 +139,10 @@ class GraphSimulation(QWidget):
 
     def reset_graph(self):
         self.ax.clear()
+        self.clear_animation()
         
     def replot_graph(self, start, end, step):
+        self.clear_animation()
         self.ax.clear()
         self.current_exp = start
         self.start_exponent = start 
@@ -156,6 +158,15 @@ class GraphSimulation(QWidget):
         
         self.setup_plot()
         self.animate_graph()
+        
+    def clear_animation(self):
+        if hasattr(self, 'animation'):
+            if self.animation.event_source:
+                self.animation.event_source.stop()
+            del self.animation
+            self.animation = None
+            print("Animation cleared.")
+    
 
 def main():
     app = QApplication([])

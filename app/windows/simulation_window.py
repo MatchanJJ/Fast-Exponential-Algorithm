@@ -133,19 +133,21 @@ class SimulationWindow(QWidget):
         start = int(self.start_input.get_input())
         end = int(self.end_input.get_input())
         step = int(self.step_input.get_input())
-        
+
         print(start, end, step)
 
-        if not hasattr(self,'graph_widget'):
-            # lazily create graph
-            self.graph_widget = graph.GraphSimulation(start, end, step)
-            self.stacked.addWidget(self.graph_widget)
-        else:
-            self.graph_widget.replot_graph(start, end, step)
-        
+        # Remove old graph widget if exists
+        if hasattr(self, 'graph_widget'):
+            self.graph_widget.clear_animation()
+            self.stacked.removeWidget(self.graph_widget)
+            self.graph_widget.deleteLater()
+
+        # Create new graph
+        self.graph_widget = graph.GraphSimulation(start, end, step)
+        self.stacked.addWidget(self.graph_widget)
         self.stacked.setCurrentWidget(self.graph_widget)
     
-    def on_stop(self):
+    def on_clear(self):
         print('stop')
         self.graph_widget.reset_graph()
         
