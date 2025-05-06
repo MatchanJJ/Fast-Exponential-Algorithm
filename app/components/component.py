@@ -1,5 +1,5 @@
 
-from PyQt5.QtWidgets import QApplication, QPushButton, QLineEdit, QLabel, QHBoxLayout, QWidget, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QPushButton, QLineEdit, QLabel, QHBoxLayout, QWidget, QVBoxLayout, QComboBox
 from PyQt5.QtGui import QIcon
 import os
 import components.font_manager as fm
@@ -97,38 +97,37 @@ class InputBox(QWidget):
     
     def __init__(self, text, parent=None):
         super().__init__(parent)
-        self.setMaximumWidth(320)
         self.setMinimumWidth(100)
+        self.setMaximumHeight(51)
         self.setStyleSheet("#QWidget {background-color: #f1a335}")
         
         self.poppins = fm.FontManager.get_poppins(16)
         
         self.text_field = QLineEdit()
-        self.text_field.setFixedWidth(150)
-        self.text_field.setFixedHeight(40)
+        self.text_field.setFixedWidth(140)
+        self.text_field.setFixedHeight(30)
         
         self.label = QLabel(text)
-        self.label.setMinimumWidth(10)
-        self.label.setMaximumWidth(150)
-        self.label.setFixedHeight(40)
+        self.label.setFixedWidth(150)
+        self.label.setFixedHeight(18)
         
-        self.label.setStyleSheet(f'font-size: 18px; font-family:"{self.poppins}", sans-serif; color: #FFFFFF;')
+        self.label.setStyleSheet(f'font-size: 14px; font-family:"{self.poppins}", sans-serif; color: #FFFFFF; line-height: 1')
         self.text_field.setStyleSheet(f"""
                             QLineEdit {{
                                 background-color: #1E232D;
                                 border: 0;
-                                border-radius: 9px;
-                                padding: 1px 4px;
+                                border-radius: 2px;
+                                padding: 2px 4px;
                                 
                                 color: white;
                                 font-family:'{self.poppins}';
-                                font-size: 15px;
+                                font-size: 14px;
                             }}
                             """)
         
-        layout = QHBoxLayout()
-        layout.setContentsMargins(0,0,1,0)
-        layout.setSpacing(10)
+        layout = QVBoxLayout()
+        layout.setContentsMargins(0,0,0,0)
+        layout.setSpacing(0)
         
         layout.addWidget(self.label)
         layout.addWidget(self.text_field)
@@ -139,6 +138,61 @@ class InputBox(QWidget):
         user_input = self.text_field.text()
         return user_input
     
+class ComboBox(QWidget):
+    
+    def __init__(self, text, parent=None):
+        super().__init__(parent)
+        self.setMaximumWidth(320)
+        self.setMaximumHeight(51)
+        self.setStyleSheet("#QWidget {background-color: #f1a335}")
+        
+        self.poppins = fm.FontManager.get_poppins(16)
+        
+        self.combo_box = QComboBox()
+        self.combo_box.setFixedWidth(130)
+        self.combo_box.setFixedHeight(30)
+        self.combo_box.addItems(["Operation","Runtime"])
+        
+        self.label = QLabel(text)
+        self.label.setMaximumWidth(150)
+        self.label.setFixedHeight(18)
+        
+        self.label.setStyleSheet(f'font-size: 14px; font-family:"{self.poppins}", sans-serif; color: #FFFFFF;')
+        self.combo_box.setStyleSheet(f"""
+                            QComboBox {{
+                                background-color: #1E232D;
+                                border: 0;
+                                border-radius: 4px;
+                                padding: 1px 4px;
+                                
+                                color: white;
+                                font-family:'{self.poppins}';
+                                font-size: 14px;
+                            }}
+                            QComboBox QAbstractItemView {{
+                                background-color: #2A2F3A;
+                                border: 1px solid #444;
+                                color: white;
+                                selection-background-color: #3A3F4B;
+                                selection-color: white;
+                                font-family: '{self.poppins}';
+
+                            }}
+                            """)
+        
+        layout = QVBoxLayout()
+        layout.setContentsMargins(0,0,1,0)
+        layout.setSpacing(0)
+        
+        layout.addWidget(self.label)
+        layout.addWidget(self.combo_box)
+        
+        self.setLayout(layout)
+        
+    def get_input(self):
+        choice = self.combo_box.currentText()
+        return choice
+
 class NoDataFound(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)

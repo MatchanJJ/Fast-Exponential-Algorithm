@@ -56,18 +56,22 @@ class SimulationWindow(QWidget):
         widget = self.wrap_widget(layout, fixed_width=1200, min_height=85, object_name="Widget",
                                   stylesheet="#Widget {background-color: #313744; border: 0; border-radius: 4px}")
 
-        label_title = self.styled_label("Input", 20)
-        label_base = self.styled_label("Base = 2", 14)
+        label_title = self.styled_label("Base", 20)
+        label_base = self.styled_label("2", 20)
+        label_base.setStyleSheet('color: #03CD97; font-size: 20px; font-weight:bold')
         
         input_layout = QHBoxLayout()
         
         self.start_input = ct.InputBox("Start Exponent")
         self.end_input = ct.InputBox("End Exponent")
-        self.step_input = ct.InputBox("step")
+        self.step_input = ct.InputBox("Step")
+        self.mode_input = ct.ComboBox("Mode")
         
         input_layout.addWidget(self.start_input)
         input_layout.addWidget(self.end_input)
         input_layout.addWidget(self.step_input)
+        input_layout.addWidget(self.mode_input)
+        input_layout.setSpacing(5)
 
         buttons = QHBoxLayout()
         
@@ -77,17 +81,17 @@ class SimulationWindow(QWidget):
         buttons.addWidget(self.stop_button)
         buttons.addWidget(self.play_button)
 
-        label_col = QVBoxLayout()
+        label_col = QHBoxLayout()
         label_col.addWidget(label_title)
         label_col.addWidget(label_base)
-        label_col.setSpacing(2)
+        label_col.setSpacing(6)
 
         layout.addLayout(label_col)
         layout.addLayout(input_layout)
         layout.addLayout(buttons)
         layout.addStretch(1)
         layout.setSpacing(35)
-        layout.setContentsMargins(25, 0, 25, 0)
+        layout.setContentsMargins(25, 0, 0, 0)
 
         row.addWidget(widget)
         return row
@@ -133,7 +137,7 @@ class SimulationWindow(QWidget):
         start = int(self.start_input.get_input())
         end = int(self.end_input.get_input())
         step = int(self.step_input.get_input())
-
+        mode = self.mode_input.get_input()
         print(start, end, step)
 
         # Remove old graph widget if exists
@@ -143,14 +147,15 @@ class SimulationWindow(QWidget):
             self.graph_widget.deleteLater()
 
         # Create new graph
-        self.graph_widget = graph.GraphSimulation(start, end, step)
+        self.graph_widget = graph.GraphSimulation(start, end, step, mode)
         self.stacked.addWidget(self.graph_widget)
         self.stacked.setCurrentWidget(self.graph_widget)
     
-    def on_clear(self):
-        print('stop')
-        self.graph_widget.reset_graph()
-        
+    def on_stop(self):
+        print('Stopping animation...')
+        if hasattr(self.graph_widget, 'animation') and self.graph_widget.animation:
+            self.graph_widget.animation.event_source.stop()
+            print('Animation stopped.')
     # helper classes    
     def styled_label(self, text, size):
         label = QLabel(text)
@@ -170,9 +175,6 @@ class SimulationWindow(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         return widget
     
-
- 
-
 def main():
     app = QApplication([])
     window = SimulationWindow()

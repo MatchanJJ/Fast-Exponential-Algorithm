@@ -56,7 +56,7 @@ class NaiveExponentiation:
     
 
 class GraphSimulation(QWidget):
-    def __init__(self, start, end, step, parent=None):
+    def __init__(self, start, end, step, mode, parent=None):
         super().__init__(parent)
         print("running GraphSimulation")
 
@@ -76,6 +76,7 @@ class GraphSimulation(QWidget):
         self.start_exponent = start
         self.end_exponent = end
         self.step = step
+        self.mode = mode
 
         # initialize plot elements
         self.x_values = []
@@ -92,7 +93,14 @@ class GraphSimulation(QWidget):
 
     def setup_plot(self):
         self.ax.set_xlabel("Exponent", color='#959cae')
-        self.ax.set_ylabel("Runtime (seconds)", color='#959cae')
+        
+        if (self.mode == "Operation"): 
+            self.ax.set_ylabel("# of Operations", color='#959cae')
+        else:
+            self.ax.set_ylabel("Runtime (seconds)", color='#959cae')
+            
+        
+        
         self.ax.set_title("Fast vs Naive Exponentiation Simulation", color='white', fontweight='bold')
         self.ax.set_facecolor('#272b34')
 
@@ -116,10 +124,15 @@ class GraphSimulation(QWidget):
     def update_plot(self, frame):
         if self.current_exp > self.end_exponent:
             return
-
-        fast_time = FastExponentiation.get_operations(self.base, self.current_exp)
-        naive_time = NaiveExponentiation.get_operations(self.base, self.current_exp)
-
+        
+        # change mode
+        if (self.mode == "Operation"): 
+            fast_time = FastExponentiation.get_operations(self.base, self.current_exp)
+            naive_time = NaiveExponentiation.get_operations(self.base, self.current_exp)
+        else:
+            fast_time = FastExponentiation.get_time(self.base, self.current_exp)
+            naive_time = NaiveExponentiation.get_time(self.base, self.current_exp)
+        
         self.x_values.append(self.current_exp)
         self.fast_times.append(fast_time)
         self.naive_times.append(naive_time)
@@ -135,11 +148,10 @@ class GraphSimulation(QWidget):
         self.canvas.draw()
         
     def animate_graph(self):
-        self.animation = FuncAnimation(self.fig, self.update_plot, interval=5)
-
-    def reset_graph(self):
-        self.ax.clear()
-        self.clear_animation()
+        if(self.end_exponent > 1000):    
+            self.animation = FuncAnimation(self.fig, self.update_plot, interval=1)
+        else:
+            self.animation = FuncAnimation(self.fig, self.update_plot, interval=25)
         
     def replot_graph(self, start, end, step):
         self.clear_animation()
@@ -156,6 +168,11 @@ class GraphSimulation(QWidget):
         self.fast_line, = self.ax.plot([], [], label="Fast-Expo", color="#63dc93")
         self.naive_line, = self.ax.plot([], [], label="Naive", color="#ff4b4c")
         
+        if (self.mode == "Operation"): 
+            self.ax.set_ylabel("# of Operations", color='#959cae')
+        else:
+            self.ax.set_ylabel("Runtime (seconds)", color='#959cae')
+            
         self.setup_plot()
         self.animate_graph()
         
