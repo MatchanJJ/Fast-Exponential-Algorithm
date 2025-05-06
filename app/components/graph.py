@@ -3,8 +3,14 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QMainWindow
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.animation import FuncAnimation
+from PyQt5.QtCore import Qt
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, message="Animation was deleted.*")
+
+
 
 class FastExponentiation:
+    
     def get_operations(base, exp):
         operations = 0  # Initialize operation counter
         result = 1
@@ -16,6 +22,7 @@ class FastExponentiation:
             operations += 1  # Count squaring
             exp //= 2
         return operations
+    
     
     def get_time(base, exp):
         start = time.perf_counter()
@@ -29,6 +36,7 @@ class FastExponentiation:
         return end - start
 
 class NaiveExponentiation:
+    
     def get_operations(base, exp):
         operations = 0  # Initialize operation counter
         result = 1
@@ -37,6 +45,7 @@ class NaiveExponentiation:
             operations += 1  # Count multiplication
         return operations
     
+    
     def get_time(base, exp):
         start = time.perf_counter()
         result = 1
@@ -44,6 +53,7 @@ class NaiveExponentiation:
             result *= base
         end = time.perf_counter()
         return end - start
+    
 
 class GraphSimulation(QWidget):
     def __init__(self, start, end, step, parent=None):
@@ -54,9 +64,11 @@ class GraphSimulation(QWidget):
         self.fig = Figure(facecolor="#272b34")
         self.canvas = FigureCanvas(self.fig)
         self.ax = self.fig.add_subplot(111)
+        self.canvas.setFixedSize(1149, 540)
 
         layout = QVBoxLayout()
         layout.addWidget(self.canvas)
+        layout.setAlignment(Qt.AlignCenter)
         self.setLayout(layout)
         
         # config
@@ -76,6 +88,7 @@ class GraphSimulation(QWidget):
 
         self.setup_plot()
         self.animate_graph()
+        
 
     def setup_plot(self):
         self.ax.set_xlabel("Exponent", color='#959cae')
@@ -100,13 +113,12 @@ class GraphSimulation(QWidget):
         self.fig.tight_layout()
         self.fig.subplots_adjust(left=0.1)
         
-
     def update_plot(self, frame):
         if self.current_exp > self.end_exponent:
             return
 
-        fast_time = FastExponentiation.get_time(self.base, self.current_exp)
-        naive_time = NaiveExponentiation.get_time(self.base, self.current_exp)
+        fast_time = FastExponentiation.get_operations(self.base, self.current_exp)
+        naive_time = NaiveExponentiation.get_operations(self.base, self.current_exp)
 
         self.x_values.append(self.current_exp)
         self.fast_times.append(fast_time)
@@ -122,11 +134,28 @@ class GraphSimulation(QWidget):
         self.fig.tight_layout()
         self.canvas.draw()
         
-        
-
     def animate_graph(self):
         self.animation = FuncAnimation(self.fig, self.update_plot, interval=5)
 
+    def reset_graph(self):
+        self.ax.clear()
+        
+    def replot_graph(self, start, end, step):
+        self.ax.clear()
+        self.current_exp = start
+        self.start_exponent = start 
+        self.end_exponent = end
+        self.step = step
+        
+        self.x_values = []
+        self.fast_times = []
+        self.naive_times = []
+        
+        self.fast_line, = self.ax.plot([], [], label="Fast-Expo", color="#63dc93")
+        self.naive_line, = self.ax.plot([], [], label="Naive", color="#ff4b4c")
+        
+        self.setup_plot()
+        self.animate_graph()
 
 def main():
     app = QApplication([])

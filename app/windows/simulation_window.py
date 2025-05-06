@@ -1,12 +1,12 @@
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QScrollArea
-from PyQt5.QtGui import QFontDatabase
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QStackedWidget
 import components.component as ct
 import components.font_manager as fm
 import components.graph as graph
+
 
 class SimulationWindow(QWidget):
     def __init__(self):
@@ -20,7 +20,7 @@ class SimulationWindow(QWidget):
         self.poppins = fm.FontManager.get_poppins(16)
 
         self.setup_ui()
-
+        
     def setup_ui(self):
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignCenter)
@@ -29,19 +29,22 @@ class SimulationWindow(QWidget):
 
         layout.addLayout(self.create_top_bar())
         layout.addLayout(self.create_input_section())
+        
+        #calls the graph
         layout.addLayout(self.create_graph_area())
+        
         layout.addStretch(1)
 
         self.setLayout(layout)
-
+        
     def create_top_bar(self):
         row = QHBoxLayout()
         widget = self.wrap_widget(QHBoxLayout(), fixed_width=1200)
 
-        back_btn = ct.BackButton()
+        self.back_btn = ct.BackButton()
         spacer = QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        widget.layout().addWidget(back_btn)
+        widget.layout().addWidget(self.back_btn)
         widget.layout().addItem(spacer)
 
         row.addWidget(widget)
@@ -57,18 +60,27 @@ class SimulationWindow(QWidget):
         label_base = self.styled_label("Base = 2", 14)
         
         input_layout = QHBoxLayout()
-        input_layout.addWidget(ct.InputBox("Start Exponent"))
-        input_layout.addWidget(ct.InputBox("End Exponent"))
-        input_layout.addWidget(ct.InputBox("Step"))
+        
+        self.start_input = ct.InputBox("Start Exponent")
+        self.end_input = ct.InputBox("End Exponent")
+        self.step_input = ct.InputBox("step")
+        
+        input_layout.addWidget(self.start_input)
+        input_layout.addWidget(self.end_input)
+        input_layout.addWidget(self.step_input)
 
         buttons = QHBoxLayout()
-        buttons.addWidget(ct.StopButton())
-        buttons.addWidget(ct.PlayButton())
+        
+        self.stop_button = ct.StopButton()
+        self.play_button = ct.PlayButton()
+        
+        buttons.addWidget(self.stop_button)
+        buttons.addWidget(self.play_button)
 
         label_col = QVBoxLayout()
         label_col.addWidget(label_title)
         label_col.addWidget(label_base)
-        label_col.setSpacing(4)
+        label_col.setSpacing(2)
 
         layout.addLayout(label_col)
         layout.addLayout(input_layout)
@@ -81,40 +93,71 @@ class SimulationWindow(QWidget):
         return row
 
     def create_graph_area(self):
-        # to fix
         row = QHBoxLayout()
 
-        graph_widget = graph.GraphSimulation(1, 10000, 1)
+        # main container
+        self.container_layout = QHBoxLayout()
+        self.container_layout.setContentsMargins(0, 0, 0, 0)
 
-        container_layout = QHBoxLayout()
-        container_layout.setContentsMargins(0, 0, 0, 0)
-
-        container = QWidget()
-        container.setLayout(container_layout)
-        container.setFixedWidth(1200)
-        container.setFixedHeight(575)
-        container.setObjectName("Widget") 
-        container.setStyleSheet("""
+        self.container = QWidget()
+        self.container.setLayout(self.container_layout)
+        self.container.setFixedWidth(1200)
+        self.container.setFixedHeight(575)
+        self.container.setObjectName("Widget") 
+        self.container.setStyleSheet("""    
             #Widget {
                 background-color: #313744;  
                 border: 0;
                 border-radius: 4px;
             }
         """)
-
-        container_layout.addWidget(graph_widget)
+        # placeholder
+        self.placeholder = ct.NoDataFound()
+        
+        # create stack widget to handle switching
+        self.stacked = QStackedWidget()
+        self.stacked.addWidget(self.placeholder)
+        
+        self.container_layout.addWidget(self.stacked, alignment=Qt.AlignCenter)
+        
+        # function call
+        self.play_button.clicked.connect(self.on_play)
+        self.stop_button.clicked.connect(self.on_stop)
 
         row.setContentsMargins(0, 0, 0, 0)
-        row.addWidget(container)
+        row.addWidget(self.container)
         return row
 
+    # button functions
+    def on_play(self):
+        start = int(self.start_input.get_input())
+        end = int(self.end_input.get_input())
+        step = int(self.step_input.get_input())
+        
+        print(start, end, step)
+
+        if not hasattr(self,'graph_widget'):
+            # lazily create graph
+            self.graph_widget = graph.GraphSimulation(start, end, step)
+            self.stacked.addWidget(self.graph_widget)
+        else:
+            self.graph_widget.replot_graph(start, end, step)
+        
+        self.stacked.setCurrentWidget(self.graph_widget)
+    
+    def on_stop(self):
+        print('stop')
+        self.graph_widget.reset_graph()
+        
+    # helper classes    
     def styled_label(self, text, size):
         label = QLabel(text)
         label.setStyleSheet(
             f'font-size: {size}px; font-family:"{self.poppins}", sans-serif; color: #FFFFFF; font-weight: bold;'
         )
         return label
-
+    
+    # tf does this do - note do not chatgpt this shit
     def wrap_widget(self, layout, fixed_width=None, min_height=None, object_name=None, stylesheet=None):
         widget = QWidget()
         widget.setLayout(layout)
@@ -124,9 +167,10 @@ class SimulationWindow(QWidget):
         if stylesheet: widget.setStyleSheet(stylesheet)
         layout.setContentsMargins(0, 0, 0, 0)
         return widget
+    
 
-        
-        
+ 
+
 def main():
     app = QApplication([])
     window = SimulationWindow()
