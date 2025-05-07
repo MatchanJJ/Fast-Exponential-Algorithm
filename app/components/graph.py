@@ -13,7 +13,6 @@ class FastExponentiation:
     def get_operations(base, exp):
         operations = 0  # Initialize operation counter
         result = 1                         # init
-        base = base
         if exp < 0:
             base = 1 / base                         # flip the base
             exp = -exp 
@@ -28,8 +27,7 @@ class FastExponentiation:
     
     def get_time(base, exp):
         start = time.perf_counter()
-        result = 1                        # init
-        base = base 
+        result = 1                        # init 
         if exp < 0:
             base = 1 / base                         # flip the base
             exp = -exp
@@ -45,8 +43,7 @@ class NaiveExponentiation:
     
     def get_operations(base, exp):
         operations = 0  
-        result = 1                       
-        base = base   
+        result = 1                        
         
         if exp < 0:
             base = 1 / base                        
@@ -59,8 +56,7 @@ class NaiveExponentiation:
     
     def get_time(base, exp):
         start = time.perf_counter()
-        result = 1                         
-        base = base
+        result = 1                        
         
         if exp < 0:
             base = 1 / base                         
