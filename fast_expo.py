@@ -7,25 +7,23 @@ from decimal import Decimal, getcontext
 getcontext().prec = 1000000000
 
 def naive_exponentiation(base, exp):
-    result = Decimal(1)                         #init
-    base = Decimal(base)                        #convert base to decimal
+    result = 1                                  #init
     if exp < 0:
         base = 1 / base                         # flip the base
-        exp = -exp                              # convert base to decimal
+        exp = -exp                              
     for _ in range(exp):                        #perform repeated multiplication
         result *= base              
     return result                               #return result
 
 def fast_exponentiation(base, exp):
-    result = Decimal(1)                         # init
-    base = Decimal(base) 
+    result = 1                                  # init 
     if exp < 0:
         base = 1 / base                         # flip the base
-        exp = -exp                              # convert base to decimal
+        exp = -exp                              
     while exp > 0:                              # loop until exponent is zero
         if exp % 2 == 1:                        # if exponent is odd, multiply result by base
             result *= base
-        base *= base                             # square the base
+        base *= base                            # square the base
         exp //= 2                               # halve the exponent
     return result                               # return result
 
