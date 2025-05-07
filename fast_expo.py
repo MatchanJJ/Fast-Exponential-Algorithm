@@ -12,7 +12,6 @@ def naive_exponentiation(base, exp):
     if exp < 0:
         base = 1 / base                         # flip the base
         exp = -exp                              # convert base to decimal
-        
     for _ in range(exp):                        #perform repeated multiplication
         result *= base              
     return result                               #return result

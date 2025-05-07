@@ -65,3 +65,9 @@ Naive Method Time: 0.002345 seconds
 Fast Exponentiation Time: 0.000012 seconds
 Fast Exponentiation is 195.42x faster.
 ```
+
+Install dependencies
+
+python -m venv .venv
+source .venv/bin/activate  # or `.venv\Scripts\activate` on Windows
+pip install -r requirements.txt
