@@ -77,6 +77,7 @@ class SimulationWindow(QWidget):
         
         self.stop_button = ct.StopButton()
         self.play_button = ct.PlayButton()
+        self.play_button.reset_state()
         
         buttons.addWidget(self.stop_button)
         buttons.addWidget(self.play_button)
@@ -100,7 +101,9 @@ class SimulationWindow(QWidget):
 
     def create_graph_area(self):
         row = QHBoxLayout()
-
+        
+        self.is_stop = False
+        
         # main container
         self.container_layout = QHBoxLayout()
         self.container_layout.setContentsMargins(0, 0, 0, 0)
@@ -137,7 +140,6 @@ class SimulationWindow(QWidget):
     # button functions
     def on_play(self):
         try:
-            
             start = int(self.start_input.get_input())
             end = int(self.end_input.get_input())
             step = int(self.step_input.get_input())
@@ -156,36 +158,45 @@ class SimulationWindow(QWidget):
                 self.clear_line()
                 raise ValueError("Step must be within the range (end - start).")
                 
-            # Remove old graph widget if exists
-            if hasattr(self, 'graph_widget'):
-                self.graph_widget.clear_animation()
-                self.stacked.removeWidget(self.graph_widget)
-                self.graph_widget.deleteLater()
-            
-            # Create new graph
-            self.graph_widget = graph.GraphSimulation(start, end, step, mode)
-            self.stacked.addWidget(self.graph_widget)
-            self.stacked.setCurrentWidget(self.graph_widget)
+            # run only if animation is permanently stopped                
+            if self.is_stop or not hasattr(self, 'graph_widget'):
+                if hasattr(self, 'graph_widget') and self.graph_widget:
+                    self.graph_widget.clear_animation()
+                    self.stacked.removeWidget(self.graph_widget)
+                    self.graph_widget.deleteLater()
+                        
+                self.graph_widget = graph.GraphSimulation(start, end, step, mode)
+                self.stacked.addWidget(self.graph_widget)
+                self.stacked.setCurrentWidget(self.graph_widget)
+                self.is_stop = False
+                
+                self.play_button.toggle_state()
+                self.graph_widget.toggle_animation()
+                self.graph_widget.set_is_running(True)
+                return
             
             self.play_button.toggle_state()
+            self.graph_widget.toggle_animation()
+            
             
         except ValueError as e:
             QMessageBox.warning(self, "Input Error", str(e))
-            
-    
+                
+    def on_stop(self):
+        self.is_stop = True
+        self.play_button.reset_state()
+        try:
+            if hasattr(self.graph_widget, 'animation') and self.graph_widget.animation:
+                self.graph_widget.animation.event_source.stop()
+        except Exception as e:
+            self.is_stop = False
+            print(str(e))
+        
     def clear_line(self):
         self.start_input.clear()
         self.end_input.clear()
         self.step_input.clear()
     
-            
-    def on_stop(self):
-        try:
-            if hasattr(self.graph_widget, 'animation') and self.graph_widget.animation:
-                self.graph_widget.animation.event_source.stop()
-        except Exception as e:
-            print(str(e))
-        
     # helper classes    
     def styled_label(self, text, size):
         label = QLabel(text)

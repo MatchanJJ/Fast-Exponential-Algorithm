@@ -105,6 +105,10 @@ class PlayButton(QPushButton):
         self.is_playing = not self.is_playing
         self.setText("Pause" if self.is_playing else "Play")
 
+    def reset_state(self):
+        self.setText("Start")
+
+
 class InputBox(QWidget):
     
     def __init__(self, text, parent=None):

@@ -53,7 +53,6 @@ class NaiveExponentiation:
             operations += 1  
         return operations
     
-    
     def get_time(base, exp):
         start = time.perf_counter()
         result = 1                        
@@ -71,7 +70,6 @@ class NaiveExponentiation:
 class GraphSimulation(QWidget):
     def __init__(self, start, end, step, mode, parent=None):
         super().__init__(parent)
-        print("running GraphSimulation")
 
         # create canvas and layout
         self.fig = Figure(facecolor="#272b34")
@@ -90,6 +88,7 @@ class GraphSimulation(QWidget):
         self.end_exponent = end
         self.step = step
         self.mode = mode
+        self.is_anim_running = True
 
         # initialize plot elements
         self.x_values = []
@@ -195,8 +194,18 @@ class GraphSimulation(QWidget):
                 self.animation.event_source.stop()
             del self.animation
             self.animation = None
-            print("Animation cleared.")
-    
+            
+    def toggle_animation(self):
+        if hasattr(self, 'animation') and self.animation.event_source:
+            if self.is_anim_running:
+                self.animation.event_source.stop()
+                self.is_anim_running = False
+            else:
+                self.animation.event_source.start()
+                self.is_anim_running = True
+
+    def set_is_running(self, state):
+        self.is_anim_running = state
 
 def main():
     app = QApplication([])
