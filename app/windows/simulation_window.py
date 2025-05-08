@@ -7,7 +7,6 @@ import components.component as ct
 import components.font_manager as fm
 import components.graph as graph
 
-
 class SimulationWindow(QWidget):
     def __init__(self):
         super().__init__()
