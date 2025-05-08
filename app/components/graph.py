@@ -4,18 +4,15 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.animation import FuncAnimation
 from PyQt5.QtCore import Qt
-from decimal import Decimal
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, message="Animation was deleted.*")
 
 
 
 class FastExponentiation:
-    
     def get_operations(base, exp):
         operations = 0  # Initialize operation counter
-        result = Decimal(1)                         # init
-        base = Decimal(base) 
+        result = 1                         # init
         if exp < 0:
             base = 1 / base                         # flip the base
             exp = -exp 
@@ -30,8 +27,7 @@ class FastExponentiation:
     
     def get_time(base, exp):
         start = time.perf_counter()
-        result = Decimal(1)                         # init
-        base = Decimal(base) 
+        result = 1                        # init 
         if exp < 0:
             base = 1 / base                         # flip the base
             exp = -exp
@@ -47,8 +43,7 @@ class NaiveExponentiation:
     
     def get_operations(base, exp):
         operations = 0  
-        result = Decimal(1)                       
-        base = Decimal(base)   
+        result = 1                        
         
         if exp < 0:
             base = 1 / base                        
@@ -61,8 +56,7 @@ class NaiveExponentiation:
     
     def get_time(base, exp):
         start = time.perf_counter()
-        result = Decimal(1)                         
-        base = Decimal(base)
+        result = 1                        
         
         if exp < 0:
             base = 1 / base                         

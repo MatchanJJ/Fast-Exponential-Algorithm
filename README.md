@@ -1,5 +1,5 @@
 # Compare Exponentiation Methods
-
+source ~/python_venv/bin/activate
 This project compares two methods of exponentiation: the **naive method** and **fast exponentiation (exponentiation by squaring)**. The program measures execution time for both methods and calculates a speedup factor.
 
 ## Installation
