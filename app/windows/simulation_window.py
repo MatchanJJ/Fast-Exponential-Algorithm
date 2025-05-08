@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QStackedWidget
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QStackedWidget, QMessageBox
 import components.component as ct
 import components.font_manager as fm
 import components.graph as graph
@@ -136,25 +136,56 @@ class SimulationWindow(QWidget):
 
     # button functions
     def on_play(self):
-        start = int(self.start_input.get_input())
-        end = int(self.end_input.get_input())
-        step = int(self.step_input.get_input())
-        mode = self.mode_input.get_input()
+        try:
+            
+            start = int(self.start_input.get_input())
+            end = int(self.end_input.get_input())
+            step = int(self.step_input.get_input())
+            mode = self.mode_input.get_input()
 
-        # Remove old graph widget if exists
-        if hasattr(self, 'graph_widget'):
-            self.graph_widget.clear_animation()
-            self.stacked.removeWidget(self.graph_widget)
-            self.graph_widget.deleteLater()
-        
-        # Create new graph
-        self.graph_widget = graph.GraphSimulation(start, end, step, mode)
-        self.stacked.addWidget(self.graph_widget)
-        self.stacked.setCurrentWidget(self.graph_widget)
+            gap = end - start
+            
+            # error handling
+            if step <= 0:
+                self.clear_line()
+                raise ValueError("Step must be a positive number.")
+            if start >= end:
+                self.clear_line()
+                raise ValueError("Start must be less than End.")
+            if step > gap:
+                self.clear_line()
+                raise ValueError("Step must be within the range (end - start).")
+                
+            # Remove old graph widget if exists
+            if hasattr(self, 'graph_widget'):
+                self.graph_widget.clear_animation()
+                self.stacked.removeWidget(self.graph_widget)
+                self.graph_widget.deleteLater()
+            
+            # Create new graph
+            self.graph_widget = graph.GraphSimulation(start, end, step, mode)
+            self.stacked.addWidget(self.graph_widget)
+            self.stacked.setCurrentWidget(self.graph_widget)
+            
+            self.play_button.toggle_state()
+            
+        except ValueError as e:
+            QMessageBox.warning(self, "Input Error", str(e))
+            
     
+    def clear_line(self):
+        self.start_input.clear()
+        self.end_input.clear()
+        self.step_input.clear()
+    
+            
     def on_stop(self):
-        if hasattr(self.graph_widget, 'animation') and self.graph_widget.animation:
-            self.graph_widget.animation.event_source.stop()
+        try:
+            if hasattr(self.graph_widget, 'animation') and self.graph_widget.animation:
+                self.graph_widget.animation.event_source.stop()
+        except Exception as e:
+            print(str(e))
+        
     # helper classes    
     def styled_label(self, text, size):
         label = QLabel(text)
@@ -163,7 +194,7 @@ class SimulationWindow(QWidget):
         )
         return label
     
-    # tf does this do - note do not chatgpt this shit
+    # tf does this do .
     def wrap_widget(self, layout, fixed_width=None, min_height=None, object_name=None, stylesheet=None):
         widget = QWidget()
         widget.setLayout(layout)

@@ -1,10 +1,12 @@
-
-from PyQt5.QtWidgets import QApplication, QPushButton, QLineEdit, QLabel, QHBoxLayout, QWidget, QVBoxLayout, QComboBox
-from PyQt5.QtGui import QIcon
 import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from PyQt5.QtWidgets import QApplication, QPushButton, QLineEdit, QLabel, QHBoxLayout, QWidget, QVBoxLayout, QComboBox, QDialog
+from PyQt5.QtGui import QIcon, QIntValidator
 import components.font_manager as fm
 from PyQt5.QtCore import Qt
 from PyQt5.QtSvg import QSvgWidget
+
          
 class BackButton(QPushButton):
 
@@ -74,6 +76,7 @@ class PlayButton(QPushButton):
         super().__init__("Play", parent)
         
         self.poppins = fm.FontManager.get_poppins(16)
+        self.is_playing = False
         
         self.setFixedSize(110, 38)
         self.setStyleSheet(f"""
@@ -97,6 +100,10 @@ class PlayButton(QPushButton):
                                 background-color: #08ffcc;
                             }}
                         """)
+        
+    def toggle_state(self):
+        self.is_playing = not self.is_playing
+        self.setText("Pause" if self.is_playing else "Play")
 
 class InputBox(QWidget):
     
@@ -111,6 +118,8 @@ class InputBox(QWidget):
         self.text_field = QLineEdit()
         self.text_field.setFixedWidth(140)
         self.text_field.setFixedHeight(30)
+        self.text_field.setValidator(QIntValidator())
+        self.text_field.setMaxLength(7)
         
         self.label = QLabel(text)
         self.label.setFixedWidth(150)
@@ -142,6 +151,9 @@ class InputBox(QWidget):
     def get_input(self):
         user_input = self.text_field.text()
         return user_input
+    
+    def clear(self):
+        self.text_field.clear()
     
 class ComboBox(QWidget):
     
@@ -249,12 +261,47 @@ class NoDataFound(QWidget):
         wrapper_layout.addWidget(content_widget)
         self.setLayout(wrapper_layout)
         
+class CustomModal(QDialog):
+    def __init__(self, message):
+        super().__init__()
+        self.setModal(True)  # Makes it modal
+        self.setWindowTitle("Alasdasdaert")
+        
+        # Apply a stylesheet to the dialog
+        self.setStyleSheet("""
+            QDialog {
+                background-color: #f0f0f0;
+                border: 2px solid #ccc;
+                border-radius: 10px;
+                padding: 10px;
+            }
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                font-size: 14px;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 20px;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+        """)
+
+        layout = QVBoxLayout()
+        label = QLabel(message)
+        button = QPushButton("OK")
+        button.clicked.connect(self.accept)
+
+        layout.addWidget(label)
+        layout.addWidget(button)
+        self.setLayout(layout)
         
 def main():
-    app = QApplication([])
-    window = NoDataFound()
-    window.show()
-    app.exec_()
+    # app = QApplication([])
+    window = CustomModal("rawr")
+    window.exec_()
+    # app.exec_()
     
 if __name__ == "__main__":
     main()

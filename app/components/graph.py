@@ -117,9 +117,7 @@ class GraphSimulation(QWidget):
             self.ax.set_ylabel("# of Operations", color='#959cae')
         else:
             self.ax.set_ylabel("Runtime (seconds)", color='#959cae')
-            
-        
-        
+    
         self.ax.set_title("Fast vs Naive Exponentiation Simulation", color='white', fontweight='bold')
         self.ax.set_facecolor('#272b34')
 
@@ -167,9 +165,11 @@ class GraphSimulation(QWidget):
         self.canvas.draw()
         
     def animate_graph(self):
-        if(self.end_exponent > 1000):    
+        if(self.end_exponent > 1000):  
+            print()  
             self.animation = FuncAnimation(self.fig, self.update_plot, interval=1)
         else:
+            print()
             self.animation = FuncAnimation(self.fig, self.update_plot, interval=5)
         
     def replot_graph(self, start, end, step):
