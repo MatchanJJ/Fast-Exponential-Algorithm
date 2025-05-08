@@ -68,7 +68,7 @@ class NaiveExponentiation:
     
 
 class GraphSimulation(QWidget):
-    def __init__(self, start, end, step, mode, parent=None):
+    def __init__(self, start, end, step, mode, frames, parent=None):
         super().__init__(parent)
 
         # create canvas and layout
@@ -89,6 +89,7 @@ class GraphSimulation(QWidget):
         self.step = step
         self.mode = mode
         self.is_anim_running = True
+        self.frames = frames
 
         # initialize plot elements
         self.x_values = []
@@ -160,10 +161,10 @@ class GraphSimulation(QWidget):
     def animate_graph(self):
         if(self.end_exponent > 1000):  
             print()  
-            self.animation = FuncAnimation(self.fig, self.update_plot, interval=1)
+            self.animation = FuncAnimation(self.fig, self.update_plot, interval=1, save_count = self.frames)
         else:
             print()
-            self.animation = FuncAnimation(self.fig, self.update_plot, interval=5)
+            self.animation = FuncAnimation(self.fig, self.update_plot, interval=5, save_count = self.frames)
         
     def replot_graph(self, start, end, step):
         self.clear_animation()

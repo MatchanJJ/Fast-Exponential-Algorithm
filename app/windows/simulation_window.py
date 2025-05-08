@@ -143,6 +143,8 @@ class SimulationWindow(QWidget):
             end = int(self.end_input.get_input())
             step = int(self.step_input.get_input())
             mode = self.mode_input.get_input()
+            
+            frames = ((10 - 0) // 2) + 1
 
             gap = end - start
             
@@ -164,7 +166,7 @@ class SimulationWindow(QWidget):
                     self.stacked.removeWidget(self.graph_widget)
                     self.graph_widget.deleteLater()
                         
-                self.graph_widget = graph.GraphSimulation(start, end, step, mode)
+                self.graph_widget = graph.GraphSimulation(start, end, step, mode, frames)
                 self.stacked.addWidget(self.graph_widget)
                 self.stacked.setCurrentWidget(self.graph_widget)
                 self.is_stop = False
@@ -177,8 +179,7 @@ class SimulationWindow(QWidget):
             self.play_button.toggle_state()
             self.graph_widget.toggle_animation()
             
-            
-        except ValueError as e:
+        except Exception as e:
             QMessageBox.warning(self, "Input Error", str(e))
                 
     def on_stop(self):
