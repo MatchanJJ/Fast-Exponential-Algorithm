@@ -66,8 +66,10 @@ Fast Exponentiation Time: 0.000012 seconds
 Fast Exponentiation is 195.42x faster.
 ```
 
-Install dependencies
-
+# Install dependencies
 python -m venv .venv
 source .venv/bin/activate  # or `.venv\Scripts\activate` on Windows
 pip install -r requirements.txt
+
+# run program
+python app/main.py

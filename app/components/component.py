@@ -19,7 +19,7 @@ class BackButton(QPushButton):
         # set font
         self.poppins = fm.FontManager.get_poppins(16)
         
-        self.setFixedHeight(40)
+        self.setFixedHeight(45)
         self.setStyleSheet(f"""
                             QPushButton {{
                                 background-color: #2a2f3c;
@@ -47,9 +47,11 @@ class StopButton(QPushButton):
     def __init__(self, parent=None):
         super().__init__("Stop", parent)
         
-        self.setFixedSize(110, 38)
-        self.setStyleSheet("""
-                            QPushButton {
+        self.poppins = fm.FontManager.get_poppins(16)
+        
+        self.setFixedSize(110, 40)
+        self.setStyleSheet(f"""
+                            QPushButton {{
                                 background-color: #443531;
                                 border: 2 solid #C3330A;
                                 border-radius: 18px;
@@ -59,15 +61,17 @@ class StopButton(QPushButton):
                                 font-family:'{self.poppins}';
                                 font-size: 15px;
                                 font-weight: bold;
-                            }
+                            }}
                             
-                            QPushButton:hover {
-                                background-color: #e93d0b;
-                            }
+                            QPushButton:hover {{
+                                background-color: #654F4A;
+                                border: 2 solid #EB3E0D;
+                            }}
                             
-                            QPushButton:pressed {
-                                background-color: #ff520c;
-                            }
+                            QPushButton:pressed {{
+                                background-color: #82695F;
+                                border: 2 solid #F34A1A;
+                            }}
                         """)
     
 class PlayButton(QPushButton):
@@ -78,7 +82,7 @@ class PlayButton(QPushButton):
         self.poppins = fm.FontManager.get_poppins(16)
         self.is_playing = False
         
-        self.setFixedSize(110, 38)
+        self.setFixedSize(110, 40)
         self.setStyleSheet(f"""
                             QPushButton {{
                                 background-color: #2a4a3d;
@@ -89,15 +93,17 @@ class PlayButton(QPushButton):
                                 color: white;
                                 font-family:'{self.poppins}';
                                 font-size: 15px;
-                                font-weight: bold;
+                                font-weight: 500;
                             }}
                             
                             QPushButton:hover {{
-                                background-color: #08e6aa;
+                                background-color: #4B675C;
+                                border: 2 solid #0AFABA;
                             }}
                             
                             QPushButton:pressed {{
-                                background-color: #08ffcc;
+                                background-color: #749A80;
+                                border: 2 solid #11F0B4;
                             }}
                         """)
         
@@ -107,7 +113,6 @@ class PlayButton(QPushButton):
 
     def reset_state(self):
         self.setText("Start")
-
 
 class InputBox(QWidget):
     
@@ -119,11 +124,12 @@ class InputBox(QWidget):
         
         self.poppins = fm.FontManager.get_poppins(16)
         
+        # cant find fix to optimize big int values, limit to 5 digits.
         self.text_field = QLineEdit()
         self.text_field.setFixedWidth(140)
         self.text_field.setFixedHeight(30)
         self.text_field.setValidator(QIntValidator())
-        self.text_field.setMaxLength(7)
+        self.text_field.setMaxLength(5)
         
         self.label = QLabel(text)
         self.label.setFixedWidth(150)
@@ -235,21 +241,22 @@ class NoDataFound(QWidget):
         svg_path = os.path.normpath(os.path.join(current_dir, '..', '..', 'icons', 'empty_state_no_data.svg'))
 
         svg = QSvgWidget(svg_path)
-        svg.setFixedSize(235, 196)
+        
+        svg.setFixedSize(352, 294)
 
         # Labels
         label_1 = QLabel("No Data")
         label_2 = QLabel("There is no data to show right now")
 
         try:
-            from font_manager import FontManager  # Your module
+            from font_manager import FontManager
             self.poppins = FontManager.get_poppins(16)
             font_family = self.poppins
         except:
             font_family = "Arial"
 
-        label_1.setStyleSheet(f"color: #656C75; font-family: '{font_family}'; font-size: 20px;")
-        label_2.setStyleSheet(f"color: #656C75; font-family: '{font_family}'; font-size: 16px;")
+        label_1.setStyleSheet(f"color: #5D636C; font-family: '{font_family}'; font-size: 22px;")
+        label_2.setStyleSheet(f"color: #5D636C; font-family: '{font_family}'; font-size: 18px;")
         label_1.setAlignment(Qt.AlignHCenter)
         label_2.setAlignment(Qt.AlignHCenter)
 
@@ -269,7 +276,8 @@ class CustomModal(QDialog):
     def __init__(self, message):
         super().__init__()
         self.setModal(True)  # Makes it modal
-        self.setWindowTitle("Alasdasdaert")
+        self.setWindowTitle("Error Title")
+        self.setFixedSize(352, 294)
         
         # Apply a stylesheet to the dialog
         self.setStyleSheet("""
@@ -300,12 +308,12 @@ class CustomModal(QDialog):
         layout.addWidget(label)
         layout.addWidget(button)
         self.setLayout(layout)
-        
+    
 def main():
-    # app = QApplication([])
+    app = QApplication([])
     window = CustomModal("rawr")
     window.exec_()
-    # app.exec_()
+    app.exec_()
     
 if __name__ == "__main__":
     main()

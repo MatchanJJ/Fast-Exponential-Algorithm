@@ -7,9 +7,8 @@ from PyQt5.QtCore import Qt
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, message="Animation was deleted.*")
 
-
-
 class FastExponentiation:
+    
     def get_operations(base, exp):
         operations = 0  # Initialize operation counter
         result = 1                         # init
@@ -68,6 +67,7 @@ class NaiveExponentiation:
     
 
 class GraphSimulation(QWidget):
+    
     def __init__(self, start, end, step, mode, frames, parent=None):
         super().__init__(parent)
 

@@ -11,20 +11,21 @@ class SimulationWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Simulation")
-        self.resize(1280, 820)
-
+        self.setFixedSize(1280, 820)
         self.setObjectName("MainWidget")
         self.setStyleSheet('#MainWidget {background-color: #141920; border: 2px solid #333; border-radius: 15px;}')
-
         self.poppins = fm.FontManager.get_poppins(16)
+
+        # config
+        self.border_radius = 20;
 
         self.setup_ui()
         
     def setup_ui(self):
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignCenter)
-        layout.setContentsMargins(0, 50, 0, 0)
-        layout.setSpacing(15)
+        layout.setContentsMargins(0, 40, 0, 0)
+        layout.setSpacing(10)
 
         layout.addLayout(self.create_top_bar())
         layout.addLayout(self.create_input_section())
@@ -43,17 +44,22 @@ class SimulationWindow(QWidget):
         self.back_btn = ct.BackButton()
         spacer = QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
+        label = QLabel("| Algorithm Complexity")
+        label.setStyleSheet('color: #03CD97; font-size: 22px; font-weight:bold')
+        
         widget.layout().addWidget(self.back_btn)
+        widget.layout().addWidget(label)
         widget.layout().addItem(spacer)
 
         row.addWidget(widget)
+        row.setContentsMargins(0,0,0,5)
         return row
 
     def create_input_section(self):
         row = QHBoxLayout()
         layout = QHBoxLayout()
         widget = self.wrap_widget(layout, fixed_width=1200, min_height=85, object_name="Widget",
-                                  stylesheet="#Widget {background-color: #313744; border: 0; border-radius: 4px}")
+                                  stylesheet=f"#Widget {{background-color: #313744; border: 0; border-radius: {self.border_radius}}}")
 
         label_title = self.styled_label("Base", 20)
         label_base = self.styled_label("2", 20)
@@ -100,7 +106,6 @@ class SimulationWindow(QWidget):
 
     def create_graph_area(self):
         row = QHBoxLayout()
-        
         self.is_stop = False
         
         # main container
@@ -110,20 +115,21 @@ class SimulationWindow(QWidget):
         self.container = QWidget()
         self.container.setLayout(self.container_layout)
         self.container.setFixedWidth(1200)
-        self.container.setFixedHeight(575)
+        self.container.setFixedHeight(600)
         self.container.setObjectName("Widget") 
-        self.container.setStyleSheet("""    
-            #Widget {
+        self.container.setStyleSheet(f"""    
+            #Widget {{
                 background-color: #313744;  
                 border: 0;
-                border-radius: 4px;
-            }
+                border-radius: {self.border_radius};
+            }}
         """)
         # placeholder
         self.placeholder = ct.NoDataFound()
         
         # create stack widget to handle switching
         self.stacked = QStackedWidget()
+            
         self.stacked.addWidget(self.placeholder)
         
         self.container_layout.addWidget(self.stacked, alignment=Qt.AlignCenter)
@@ -136,7 +142,6 @@ class SimulationWindow(QWidget):
         row.addWidget(self.container)
         return row
 
-    # button functions
     def on_play(self):
         try:
             start = int(self.start_input.get_input())
@@ -144,8 +149,11 @@ class SimulationWindow(QWidget):
             step = int(self.step_input.get_input())
             mode = self.mode_input.get_input()
             
-            frames = ((10 - 0) // 2) + 1
-
+            frames = ((end - start) // step) + 1
+             
+            MAX_FRAMES = 10000
+            if frames > MAX_FRAMES:
+                frames = MAX_FRAMES
             gap = end - start
             
             # error handling
@@ -158,7 +166,7 @@ class SimulationWindow(QWidget):
             if step > gap:
                 self.clear_line()
                 raise ValueError("Step must be within the range (end - start).")
-                
+                    
             # run only if animation is permanently stopped                
             if self.is_stop or not hasattr(self, 'graph_widget'):
                 if hasattr(self, 'graph_widget') and self.graph_widget:
@@ -180,8 +188,9 @@ class SimulationWindow(QWidget):
             self.graph_widget.toggle_animation()
             
         except Exception as e:
+            print(e)
             QMessageBox.warning(self, "Input Error", str(e))
-                
+            
     def on_stop(self):
         self.is_stop = True
         self.play_button.reset_state()
@@ -213,6 +222,7 @@ class SimulationWindow(QWidget):
         if min_height: widget.setMinimumHeight(min_height)
         if object_name: widget.setObjectName(object_name)
         if stylesheet: widget.setStyleSheet(stylesheet)
+        
         layout.setContentsMargins(0, 0, 0, 0)
         return widget
     
