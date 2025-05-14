@@ -167,7 +167,7 @@ class InputBox(QWidget):
     
 class ComboBox(QWidget):
     
-    def __init__(self, text, parent=None):
+    def __init__(self, text, items, parent=None):
         super().__init__(parent)
         self.setMaximumWidth(320)
         self.setMaximumHeight(51)
@@ -178,7 +178,9 @@ class ComboBox(QWidget):
         self.combo_box = QComboBox()
         self.combo_box.setFixedWidth(130)
         self.combo_box.setFixedHeight(30)
-        self.combo_box.addItems(["Operation","Runtime"])
+
+        # Add items dynamically
+        self.combo_box.addItems(items)
         
         self.label = QLabel(text)
         self.label.setMaximumWidth(150)
@@ -203,12 +205,11 @@ class ComboBox(QWidget):
                                 selection-background-color: #3A3F4B;
                                 selection-color: white;
                                 font-family: '{self.poppins}';
-
                             }}
                             """)
         
         layout = QVBoxLayout()
-        layout.setContentsMargins(0,0,1,0)
+        layout.setContentsMargins(0, 0, 1, 0)
         layout.setSpacing(0)
         
         layout.addWidget(self.label)
@@ -217,8 +218,8 @@ class ComboBox(QWidget):
         self.setLayout(layout)
         
     def get_input(self):
-        choice = self.combo_box.currentText()
-        return choice
+        return self.combo_box.currentText()
+
 
 class NoDataFound(QWidget):
     def __init__(self, parent=None):

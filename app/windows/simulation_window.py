@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QStackedWidget, QMessageBox
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QStackedWidget, QMessageBox, QDesktopWidget
 import components.component as ct
 import components.font_manager as fm
 import components.graph as graph
@@ -11,13 +11,14 @@ class SimulationWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Simulation")
-        self.setFixedSize(1280, 820)
+        self.setMinimumSize(1280, 820)
+    
         self.setObjectName("MainWidget")
         self.setStyleSheet('#MainWidget {background-color: #141920; border: 2px solid #333; border-radius: 15px;}')
         self.poppins = fm.FontManager.get_poppins(16)
-
+        
         # config
-        self.border_radius = 20;
+        self.border_radius = 20
 
         self.setup_ui()
         

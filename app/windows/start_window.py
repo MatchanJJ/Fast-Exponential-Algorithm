@@ -12,7 +12,7 @@ class StartWindow(QWidget):
         super().__init__()
         
         self.setWindowTitle("Algorithm Simulation")
-        self.setFixedSize(1080, 350)
+        self.setMinimumSize(1080, 350)
         
         #create objects
         self.label_1 = QLabel("Naive vs Fast Expo", self)
