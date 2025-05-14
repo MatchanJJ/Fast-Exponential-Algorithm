@@ -137,24 +137,26 @@ class GraphSimulation(QWidget):
         if self.current_exp > self.end_exponent:
             return
         
-        # change mode
-        if (self.mode == "Operation"): 
-            fast_time = FastExponentiation.get_operations(self.base, self.current_exp)
-            naive_time = NaiveExponentiation.get_operations(self.base, self.current_exp)
-        else:
-            fast_time = FastExponentiation.get_time(self.base, self.current_exp)
-            naive_time = NaiveExponentiation.get_time(self.base, self.current_exp)
-        
         self.x_values.append(self.current_exp)
         
-       
-
-        if self.display_mode in ["both", "fast"]:
-            self.fast_times.append(fast_time)
-            self.fast_line.set_data(self.x_values, self.fast_times)
-        if self.display_mode in ["both", "naive"]:
-            self.naive_times.append(naive_time)
-            self.naive_line.set_data(self.x_values, self.naive_times)
+        if self.mode == "Operation":
+            if self.display_mode in ["both", "fast"]:
+                fast_time = FastExponentiation.get_operations(self.base, self.current_exp)
+                self.fast_times.append(fast_time)
+                self.fast_line.set_data(self.x_values, self.fast_times)
+            if self.display_mode in ["both", "naive"]:
+                naive_time = NaiveExponentiation.get_operations(self.base, self.current_exp)
+                self.naive_times.append(naive_time)
+                self.naive_line.set_data(self.x_values, self.naive_times)
+        else:
+            if self.display_mode in ["both", "fast"]:
+                fast_time = FastExponentiation.get_time(self.base, self.current_exp)
+                self.fast_times.append(fast_time)
+                self.fast_line.set_data(self.x_values, self.fast_times)
+            if self.display_mode in ["both", "naive"]:
+                naive_time = NaiveExponentiation.get_time(self.base, self.current_exp)
+                self.naive_times.append(naive_time)
+                self.naive_line.set_data(self.x_values, self.naive_times)
 
         self.ax.relim()
         self.ax.autoscale_view()

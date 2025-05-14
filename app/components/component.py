@@ -32,11 +32,9 @@ class BackButton(QPushButton):
                                 font-size: 16px;
                                 font-weight: bold;
                             }}
-                            
                             QPushButton:hover {{
                                 background-color: #3C4455;
                             }}
-                            
                             QPushButton:pressed {{
                                 background-color: #505A6F;
                             }}
@@ -61,13 +59,11 @@ class StopButton(QPushButton):
                                 font-family:'{self.poppins}';
                                 font-size: 15px;
                                 font-weight: bold;
-                            }}
-                            
+                            }}       
                             QPushButton:hover {{
                                 background-color: #654F4A;
                                 border: 2 solid #EB3E0D;
-                            }}
-                            
+                            }}            
                             QPushButton:pressed {{
                                 background-color: #82695F;
                                 border: 2 solid #F34A1A;
@@ -95,12 +91,10 @@ class PlayButton(QPushButton):
                                 font-size: 15px;
                                 font-weight: 500;
                             }}
-                            
                             QPushButton:hover {{
                                 background-color: #4B675C;
                                 border: 2 solid #0AFABA;
-                            }}
-                            
+                            }} 
                             QPushButton:pressed {{
                                 background-color: #749A80;
                                 border: 2 solid #11F0B4;
@@ -129,7 +123,7 @@ class InputBox(QWidget):
         self.text_field.setFixedWidth(140)
         self.text_field.setFixedHeight(30)
         self.text_field.setValidator(QIntValidator())
-        self.text_field.setMaxLength(5)
+        self.text_field.setMaxLength(9)
         
         self.label = QLabel(text)
         self.label.setFixedWidth(150)

@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QMessageBox
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QMessageBox, QStackedWidget
 import components.component as ct
 import components.font_manager as fm
 
@@ -29,6 +29,7 @@ class VisualizationWindow(QWidget):
 
         layout.addLayout(self.create_top_bar())
         layout.addLayout(self.create_input_section())
+        layout.addLayout(self.create_visualization_area())
         layout.addStretch(1)
 
         self.setLayout(layout)
@@ -57,15 +58,17 @@ class VisualizationWindow(QWidget):
         widget = self.wrap_widget(layout, fixed_width=1200, min_height=85, object_name="Widget",
                                   stylesheet=f"#Widget {{background-color: #313744; border: 0; border-radius: {self.border_radius}}}")
 
-        label_title = self.styled_label("Base", 20)
-        label_base = self.styled_label("2", 20)
+        label_title = self.styled_label("Visualization", 20)
+        label_base = self.styled_label("Tool", 20)
         label_base.setStyleSheet('color: #03CD97; font-size: 20px; font-weight:bold')
 
         input_layout = QHBoxLayout()
 
         self.base_input = ct.InputBox("Base")
         self.exp_input = ct.InputBox("Exponent")
-        self.mode_input = ct.ComboBox("Algorithm")
+        
+        items = ["Naive", "Fast-Expo"]
+        self.mode_input = ct.ComboBox("Algorithm", items)
 
         input_layout.addWidget(self.base_input)
         input_layout.addWidget(self.exp_input)
@@ -98,6 +101,36 @@ class VisualizationWindow(QWidget):
         row.addWidget(widget)
         return row
 
+    def create_visualization_area(self):
+        row = QHBoxLayout()
+        self.container_layout = QHBoxLayout()
+        self.container_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.container = QWidget()
+        self.container.setLayout(self.container_layout)
+        self.container.setFixedWidth(1200)
+        self.container.setFixedHeight(600)
+        self.container.setObjectName("Widget") 
+        self.container.setStyleSheet(f"""    
+            #Widget {{
+                background-color: #313744;  
+                border: 0;
+                border-radius: {self.border_radius};
+            }}
+        """)
+        
+        self.stacked = QStackedWidget()
+
+        self.placeholder = ct.NoDataFound()
+        self.stacked.addWidget(self.placeholder)
+        
+        self.container_layout.addWidget(self.stacked, alignment=Qt.AlignCenter)
+        
+        row.setContentsMargins(0, 0, 0, 0)
+        row.addWidget(self.container)
+        return row
+        
+        
     # Helper methods
     def styled_label(self, text, size):
         label = QLabel(text)

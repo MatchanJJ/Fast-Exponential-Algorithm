@@ -29,7 +29,8 @@ class AppController:
 
     def show_simulation_window(self):
         self.hide_all_windows()
-        self.center_window(self.simulation_window)
+        # self.center_window(self.simulation_window)
+        self.simulation_window.resize(1280, 820)
         self.simulation_window.show()
 
     def show_visualization_window(self):
