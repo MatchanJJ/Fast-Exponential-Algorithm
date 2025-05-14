@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout
-
+from PyQt5.QtGui import QIcon
 import components.font_manager as fm
 
 class StartWindow(QWidget):
@@ -13,6 +13,10 @@ class StartWindow(QWidget):
         
         self.setWindowTitle("Algorithm Simulation")
         self.setMinimumSize(1080, 350)
+        
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        icon = os.path.normpath(os.path.join(current_dir, '..', '..', 'icons', 'window_icon.png'))
+        self.setWindowIcon(QIcon(icon))
         
         #create objects
         self.label_1 = QLabel("Naive vs Fast Expo", self)
@@ -34,10 +38,11 @@ class StartWindow(QWidget):
                                     QPushButton {
                                         background-color: #07C08E;
                                         color: white;
-                                        font-size: 24px;
+                                        font-size: 20px;
                                         border: none;
-                                        border-radius: 10px;
+                                        border-radius: 18px;
                                         padding: 10px 20px;
+                                        font-weight: bold;
                                     }
                                     
                                     QPushButton:hover {

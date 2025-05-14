@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLay
 import components.component as ct
 import components.font_manager as fm
 import components.graph as graph
+from PyQt5.QtGui import QIcon
 
 class SimulationWindow(QWidget):
     def __init__(self):
@@ -16,6 +17,11 @@ class SimulationWindow(QWidget):
         self.setObjectName("MainWidget")
         self.setStyleSheet('#MainWidget {background-color: #141920; border: 2px solid #333; border-radius: 15px;}')
         self.poppins = fm.FontManager.get_poppins(16)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        icon = os.path.normpath(os.path.join(current_dir, '..', '..', 'icons', 'window_icon.png'))
+        self.setWindowIcon(QIcon(icon))
         
         # config
         self.border_radius = 20
@@ -83,7 +89,7 @@ class SimulationWindow(QWidget):
         input_layout.addWidget(self.step_input)
         input_layout.addWidget(self.mode_input)
         input_layout.addWidget(self.graph_input)
-        input_layout.setSpacing(5)
+        input_layout.setSpacing(2)
 
         buttons = QHBoxLayout()
         

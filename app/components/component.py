@@ -186,7 +186,6 @@ class ComboBox(QWidget):
                                 background-color: #1E232D;
                                 border: 0;
                                 border-radius: 4px;
-                                padding: 1px 4px;
                                 
                                 color: white;
                                 font-family:'{self.poppins}';
@@ -203,7 +202,7 @@ class ComboBox(QWidget):
                             """)
         
         layout = QVBoxLayout()
-        layout.setContentsMargins(0, 0, 1, 0)
+        layout.setContentsMargins(0, 0, 8, 0)
         layout.setSpacing(0)
         
         layout.addWidget(self.label)

@@ -17,11 +17,17 @@ class MenuWindow(QWidget):
         
         self.poppins = fm.FontManager.get_poppins(16)
         
+        
+        
         # config
         self.border_radius = 20
         current_dir = os.path.dirname(os.path.abspath(__file__))
         self.left_icon = os.path.normpath(os.path.join(current_dir, '..', '..', 'icons', 'visualization_icon.svg'))
         self.right_icon = os.path.normpath(os.path.join(current_dir, '..', '..', 'icons', 'simulation_icon.svg'))
+        
+        icon = os.path.normpath(os.path.join(current_dir, '..', '..', 'icons', 'window_icon.png'))
+        self.setWindowIcon(QIcon(icon))
+        
         # set font
         self.poppins = fm.FontManager.get_poppins(16)
         self.btn_stylesheet = """
@@ -38,7 +44,7 @@ class MenuWindow(QWidget):
                 font-weight: bold;
             }
             QToolButton:hover {
-                background-color: #4C5770;
+                background-color: #03BF8D;
             }
         """
         self.btn_size = QSize(290, 290)

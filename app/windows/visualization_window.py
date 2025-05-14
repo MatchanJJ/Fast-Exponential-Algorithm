@@ -5,17 +5,22 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QMessageBox, QStackedWidget
 import components.component as ct
 import components.font_manager as fm
+from PyQt5.QtGui import QIcon
 
 class VisualizationWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Visualization")
         self.setMinimumSize(1280, 820)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         self.setObjectName("MainWidget")
         self.setStyleSheet('#MainWidget {background-color: #141920; border: 2px solid #333; border-radius: 15px;}')
         self.poppins = fm.FontManager.get_poppins(16)
         
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        icon = os.path.normpath(os.path.join(current_dir, '..', '..', 'icons', 'window_icon.png'))
+        self.setWindowIcon(QIcon(icon))
         # config
         self.border_radius = 20
 
