@@ -71,12 +71,18 @@ class SimulationWindow(QWidget):
         self.start_input = ct.InputBox("Start Exponent")
         self.end_input = ct.InputBox("End Exponent")
         self.step_input = ct.InputBox("Step")
-        self.mode_input = ct.ComboBox("Mode")
+        
+        items = ["Operation","Runtime"]
+        self.mode_input = ct.ComboBox("Mode", items)
+        
+        items_2 = ["both","fast", "naive"]
+        self.graph_input = ct.ComboBox("Graph", items_2)
         
         input_layout.addWidget(self.start_input)
         input_layout.addWidget(self.end_input)
         input_layout.addWidget(self.step_input)
         input_layout.addWidget(self.mode_input)
+        input_layout.addWidget(self.graph_input)
         input_layout.setSpacing(5)
 
         buttons = QHBoxLayout()
@@ -149,7 +155,8 @@ class SimulationWindow(QWidget):
             end = int(self.end_input.get_input())
             step = int(self.step_input.get_input())
             mode = self.mode_input.get_input()
-            
+            display = self.graph_input.get_input()
+            print(display)
             frames = ((end - start) // step) + 1
              
             MAX_FRAMES = 10000
@@ -175,7 +182,7 @@ class SimulationWindow(QWidget):
                     self.stacked.removeWidget(self.graph_widget)
                     self.graph_widget.deleteLater()
                         
-                self.graph_widget = graph.GraphSimulation(start, end, step, mode, frames)
+                self.graph_widget = graph.GraphSimulation(start, end, step, mode, frames, display)
                 self.stacked.addWidget(self.graph_widget)
                 self.stacked.setCurrentWidget(self.graph_widget)
                 self.is_stop = False

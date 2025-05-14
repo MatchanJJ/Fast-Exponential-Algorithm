@@ -68,7 +68,7 @@ class NaiveExponentiation:
 
 class GraphSimulation(QWidget):
     
-    def __init__(self, start, end, step, mode, frames, parent=None):
+    def __init__(self, start, end, step, mode, frames, display_mode, parent=None):
         super().__init__(parent)
 
         # create canvas and layout
@@ -90,6 +90,7 @@ class GraphSimulation(QWidget):
         self.mode = mode
         self.is_anim_running = True
         self.frames = frames
+        self.display_mode = display_mode
 
         # initialize plot elements
         self.x_values = []
@@ -145,11 +146,15 @@ class GraphSimulation(QWidget):
             naive_time = NaiveExponentiation.get_time(self.base, self.current_exp)
         
         self.x_values.append(self.current_exp)
-        self.fast_times.append(fast_time)
-        self.naive_times.append(naive_time)
+        
+       
 
-        self.fast_line.set_data(self.x_values, self.fast_times)
-        self.naive_line.set_data(self.x_values, self.naive_times)
+        if self.display_mode in ["both", "fast"]:
+            self.fast_times.append(fast_time)
+            self.fast_line.set_data(self.x_values, self.fast_times)
+        if self.display_mode in ["both", "naive"]:
+            self.naive_times.append(naive_time)
+            self.naive_line.set_data(self.x_values, self.naive_times)
 
         self.ax.relim()
         self.ax.autoscale_view()
