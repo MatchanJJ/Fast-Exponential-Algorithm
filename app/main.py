@@ -9,9 +9,9 @@ def main():
     app = QApplication(sys.argv)
     
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    icon_path = os.path.join(current_dir, '..', '..', 'icons', 'window_icon.png')
-    app.setWindowIcon(QIcon(icon_path)) 
-        
+    icon_path = os.path.join(current_dir, '..', 'icons', 'window_icon.ico')
+    app.setWindowIcon(QIcon(icon_path))
+
     controller = AppController()
     controller.run()
     sys.exit(app.exec_())
