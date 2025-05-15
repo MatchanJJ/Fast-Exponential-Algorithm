@@ -5,7 +5,9 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QMessageBox, QStackedWidget
 import components.component as ct
 import components.font_manager as fm
+import components.visualization as vn
 from PyQt5.QtGui import QIcon
+
 
 class VisualizationWindow(QWidget):
     def __init__(self):
@@ -127,14 +129,23 @@ class VisualizationWindow(QWidget):
         self.stacked = QStackedWidget()
 
         self.placeholder = ct.NoDataFound()
-        self.stacked.addWidget(self.placeholder)
+        # self.stacked.addWidget(self.placeholder)
+        
+        self.visualization = vn.VisualizeAlgo()
+        self.stacked.addWidget(self.visualization)
         
         self.container_layout.addWidget(self.stacked, alignment=Qt.AlignCenter)
         
         row.setContentsMargins(0, 0, 0, 0)
         row.addWidget(self.container)
         return row
+    
+    def visualization_container(self):
+        self.setFixedSize(1150, 570)
         
+        
+        print()
+            
         
     # Helper methods
     def styled_label(self, text, size):

@@ -16,16 +16,16 @@ def naive_exponentiation(base, exp):
     return result                               #return result
 
 def fast_exponentiation(base, exp):
-    result = 1                             # init 
+    result = 1                        # init 
     if exp < 0:
-        base = 1 / base                    # flip the base
+        base = 1 / base               # flip the base
         exp = -exp                              
-    while exp > 0:                         # loop until exponent is zero
-        if exp % 2 == 1:                   # if exponent is odd, multiply result by base
+    while exp > 0:                    # loop until exponent is zero
+        if exp % 2 == 1:              # if exponent is odd, multiply result by base
             result *= base
-        base *= base                       # square the base
-        exp //= 2                          # halve the exponent
-    return result                          # return result
+        base *= base                  # square the base
+        exp //= 2                     # halve the exponent
+    return result                     # return result
 
 def compare_methods(base, exp):
     if base == 0 and exp < 0:

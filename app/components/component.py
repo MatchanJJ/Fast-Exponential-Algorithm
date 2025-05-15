@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from PyQt5.QtWidgets import QApplication, QPushButton, QLineEdit, QLabel, QHBoxLayout, QWidget, QVBoxLayout, QComboBox, QDialog
-from PyQt5.QtGui import QIcon, QIntValidator
+from PyQt5.QtGui import QIcon, QIntValidator, QFont
 import components.font_manager as fm
 from PyQt5.QtCore import Qt
 from PyQt5.QtSvg import QSvgWidget
@@ -213,7 +213,6 @@ class ComboBox(QWidget):
     def get_input(self):
         return self.combo_box.currentText()
 
-
 class NoDataFound(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -223,7 +222,7 @@ class NoDataFound(QWidget):
         # Create the inner content widget
         content_widget = QWidget()
         content_widget.setFixedSize(1149, 540)
-        content_widget.setStyleSheet("background-color: #272b34; border-radius: 3px")
+        content_widget.setStyleSheet("background-color: #272b34; border-radius: 12px")
 
         # SVG, labels, and layout inside content_widget
         layout = QVBoxLayout()
@@ -303,6 +302,36 @@ class CustomModal(QDialog):
         layout.addWidget(button)
         self.setLayout(layout)
     
+    
+class CodeBlock(QLabel):
+    def __init__(self, text, parent=None):
+        super().__init__(parent)
+        self.setFixedSize(900, 35)
+
+        self.poppins = fm.FontManager.get_poppins(16)
+
+        self.setText(f'<pre style="font-family: Consolas;">{text}</pre>')
+        self.setContentsMargins(0,0,0,0)
+        
+        
+        self.setStyleSheet("""
+            background-color: #1b1e28;
+            font-size: 20px;
+            color: #e4f0fb;
+            font-weight: 450;
+        """)
+
+    def highlight(self):
+        self.setStyleSheet("""
+            background-color: #272c3b;
+            font-size: 20px;
+            color: #e4f0fb;
+            font-weight: 450;
+        """)
+
+
+
+
 def main():
     app = QApplication([])
     window = CustomModal("rawr")
