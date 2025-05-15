@@ -54,8 +54,7 @@ This project implements the Fast-Expo Algorithm and compares two methods of expo
    python app/main.py
    ```
    *(Use `python3` instead of `python` if needed.)*
-
-   ```
+   
 This project was created for course code CS6: Algorithm And Complexity as a Final Project. 
 -robroi
 
