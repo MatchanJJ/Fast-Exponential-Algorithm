@@ -302,7 +302,6 @@ class CustomModal(QDialog):
         layout.addWidget(button)
         self.setLayout(layout)
     
-    
 class CodeBlock(QLabel):
     def __init__(self, text, parent=None):
         super().__init__(parent)
@@ -328,10 +327,41 @@ class CodeBlock(QLabel):
             color: #e4f0fb;
             font-weight: 450;
         """)
+        
+    def unhighlight(self):
+        self.setStyleSheet("""
+            background-color: #1b1e28;
+            font-size: 20px;
+            color: #e4f0fb;
+            font-weight: 450;
+        """)
 
 
+class ResultBlock(QWidget):
+    def __init__(self, label, display, parent=None):
+        super().__init__(parent)
+        self.setFixedSize(100,100)
+        layout = QVBoxLayout()
+        
+        self.label = QLabel(label)
+        
+        self.display = QLineEdit(display)
+        self.display.setReadOnly(True)
+    
+        self.label.setStyleSheet('color: #FFFFFF; font-size: 20px; font-weight: 600;')
+        self.display.setStyleSheet('color: #FFFFFF; font-size: 22px; font-weight: 600; background-color: #1b1e28; border: 0px;')
+        
+        layout.addWidget(self.label)
+        layout.addWidget(self.display)
+        layout.setAlignment(Qt.AlignCenter)
+        
+        self.setLayout(layout)
 
+    def update_value(self, value):
+        self.display.setText(str(value))
 
+        
+        
 def main():
     app = QApplication([])
     window = CustomModal("rawr")

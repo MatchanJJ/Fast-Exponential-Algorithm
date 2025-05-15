@@ -28,6 +28,9 @@ class VisualizationWindow(QWidget):
 
         self.setup_ui()
 
+        # call events
+        self.play_button.clicked.connect(self.on_play)
+        
     def setup_ui(self):
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignCenter)
@@ -73,13 +76,9 @@ class VisualizationWindow(QWidget):
 
         self.base_input = ct.InputBox("Base")
         self.exp_input = ct.InputBox("Exponent")
-        
-        items = ["Naive", "Fast-Expo"]
-        self.mode_input = ct.ComboBox("Algorithm", items)
 
         input_layout.addWidget(self.base_input)
         input_layout.addWidget(self.exp_input)
-        input_layout.addWidget(self.mode_input)
         input_layout.setSpacing(5)
 
         buttons = QHBoxLayout()
@@ -129,10 +128,7 @@ class VisualizationWindow(QWidget):
         self.stacked = QStackedWidget()
 
         self.placeholder = ct.NoDataFound()
-        # self.stacked.addWidget(self.placeholder)
-        
-        self.visualization = vn.VisualizeAlgo()
-        self.stacked.addWidget(self.visualization)
+        self.stacked.addWidget(self.placeholder)
         
         self.container_layout.addWidget(self.stacked, alignment=Qt.AlignCenter)
         
@@ -142,10 +138,22 @@ class VisualizationWindow(QWidget):
     
     def visualization_container(self):
         self.setFixedSize(1150, 570)
-        
-        
         print()
+    
+    # Functions
+    def on_play(self):
+        base = int(self.base_input.get_input())
+        exp = int(self.exp_input.get_input())
+        
+        # Clear previous visualization
+        while self.stacked.count() > 1:
+            self.stacked.removeWidget(self.stacked.widget(1))
             
+        self.visualization_widget = vn.Visualization(base, exp)
+        self.visualization_widget.start_visualization()
+        self.stacked.addWidget(self.visualization_widget)
+        self.stacked.setCurrentWidget(self.visualization_widget)
+        self.play_button.toggle_state()
         
     # Helper methods
     def styled_label(self, text, size):
