@@ -26,7 +26,9 @@ class AppController:
     def show_menu_window(self):
         self.start_window.hide()  
         self.simulation_window.hide()
+        self.simulation_window.on_stop()
         self.visualization_window.hide()
+        self.visualization_window.on_stop()
         self.menu_window.show()
         
         self.center_window(self.menu_window)
