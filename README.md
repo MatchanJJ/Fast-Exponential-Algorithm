@@ -34,6 +34,13 @@ This project compares two methods of exponentiation: the **naive method** and **
    python3 --version
    ```
 
+## Install dependencies and create venv
+   ```
+   python -m venv .venv
+   source .venv/bin/activate  # or `.venv\Scripts\activate` on Windows
+   pip install -r requirements.txt
+   ```
+
 ## Running the Script
 
 1. **Clone or Download the Project:**
@@ -45,31 +52,10 @@ This project compares two methods of exponentiation: the **naive method** and **
 
 2. **Run the Python File:**
    ```sh
-   python fast-expo.py
+   python app/main.py
    ```
    *(Use `python3` instead of `python` if needed.)*
 
-3. **Choose Input Type:**
-   - Enter `1` to manually input a base and exponent.
-   - Enter `2` to use randomly generated values.
+   ```
 
-4. **View Results:**
-   - The script will display the execution time for both methods and the speedup factor.
 
-## Example Output
-```
-Choose input type: (1) Manual (2) Random: 2
-Generated Base: 5, Exponent: 230
-Base: 5, Exponent: 230
-Naive Method Time: 0.002345 seconds
-Fast Exponentiation Time: 0.000012 seconds
-Fast Exponentiation is 195.42x faster.
-```
-
-# Install dependencies
-python -m venv .venv
-source .venv/bin/activate  # or `.venv\Scripts\activate` on Windows
-pip install -r requirements.txt
-
-# run program
-python app/main.py
