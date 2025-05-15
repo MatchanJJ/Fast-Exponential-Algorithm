@@ -27,8 +27,8 @@ class Visualization(QWidget):
     
     def __init__(self, base, exp, parent=None):
         super().__init__(parent)
-        self.setFixedSize(1150, 570)
-        self.setContentsMargins(0,0,0,0)
+        self.setFixedSize(1158, 570)
+        self.setContentsMargins(0,0,0,15)
         
         self._create_code_wdiget()
         self._create_result_wdiget()
@@ -40,8 +40,9 @@ class Visualization(QWidget):
         self.gen = None
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.next_step)
+        self.is_paused = False
         
-        layout = QHBoxLayout()
+        layout = QVBoxLayout()
         layout.addWidget(self.code_widget)
         layout.addWidget(self.result_output_widget)
         
@@ -51,7 +52,7 @@ class Visualization(QWidget):
         # Create two child widgets
         self.code_widget = QWidget()
         self.code_widget.setStyleSheet('background-color: #1b1e28; border: 0px; border-radius: 4px;')  # Light blue
-        self.code_widget.setFixedSize(900, 420)
+        self.code_widget.setFixedSize(1145, 420)
         self.code_widget.setContentsMargins(0,0,0,0)
         
         #create code section
@@ -84,17 +85,19 @@ class Visualization(QWidget):
         self.result_output_widget = QWidget()
         self.result_output_widget.setObjectName('Result')
         self.result_output_widget.setStyleSheet('#Result{background-color: #1b1e28; border: 0px; border-radius: 4px;}')
-        self.result_output_widget.setFixedSize(124, 420)
+        self.result_output_widget.setFixedSize(1145, 100)
+        self.result_output_widget.setContentsMargins(0,0,0,50)
         
         self.result_output = ct.ResultBlock('result', '')
         self.base_output = ct.ResultBlock('base', '')
         self.exp_output = ct.ResultBlock('exp', '')
         
-        layout = QVBoxLayout()
+        layout = QHBoxLayout()
         layout.addWidget(self.result_output)
         layout.addWidget(self.base_output)
         layout.addWidget(self.exp_output)
-        layout.setAlignment(Qt.AlignCenter)
+        layout.addStretch(1)
+        layout.setAlignment(Qt.AlignTop)
         
         self.result_output_widget.setLayout(layout)
     
@@ -106,7 +109,7 @@ class Visualization(QWidget):
             self.code_blocks[self.current_line - 1].unhighlight()
         print("start_visualization reached")
         self.gen = self.fast_expo_gen(base,exp)
-        self.timer.start(1000)
+        self.timer.start(500)
     
     def next_step(self):
         try:
@@ -129,6 +132,23 @@ class Visualization(QWidget):
             self.result_output.update_value(f"{final_result}")
             print("Visualization complete")
             
+    def toggle_pause(self):
+        
+        self.is_paused = not self.is_paused
+        if self.is_paused:
+            self.timer.stop()
+        else:
+            self.timer.start(1000)
+        print(self.is_paused)
+        return self.is_paused
+    
+    def stop(self):
+        self.timer.stop()
+        self.is_paused = False
+        # Clear any highlighting
+        if self.current_line is not None:
+            self.code_blocks[self.current_line - 1].unhighlight()
+    
     @staticmethod
     def fast_expo_gen(base, exp):
         print(f"\n--- Starting generator with base={base}, exp={exp} ---")

@@ -73,7 +73,7 @@ class StopButton(QPushButton):
 class PlayButton(QPushButton):
     
     def __init__(self, parent=None):
-        super().__init__("Play", parent)
+        super().__init__("Pause", parent)
         
         self.poppins = fm.FontManager.get_poppins(16)
         self.is_playing = False
@@ -222,7 +222,7 @@ class NoDataFound(QWidget):
         # Create the inner content widget
         content_widget = QWidget()
         content_widget.setFixedSize(1149, 540)
-        content_widget.setStyleSheet("background-color: #272b34; border-radius: 12px")
+        content_widget.setStyleSheet("background-color: #272b34; border-radius: 4px")
 
         # SVG, labels, and layout inside content_widget
         layout = QVBoxLayout()
@@ -305,7 +305,7 @@ class CustomModal(QDialog):
 class CodeBlock(QLabel):
     def __init__(self, text, parent=None):
         super().__init__(parent)
-        self.setFixedSize(900, 35)
+        self.setFixedSize(1150, 35)
 
         self.poppins = fm.FontManager.get_poppins(16)
 
@@ -322,9 +322,9 @@ class CodeBlock(QLabel):
 
     def highlight(self):
         self.setStyleSheet("""
-            background-color: #272c3b;
+            background-color: #3A4156;
             font-size: 20px;
-            color: #e4f0fb;
+            color: #5fb3a1;
             font-weight: 450;
         """)
         
@@ -340,7 +340,7 @@ class CodeBlock(QLabel):
 class ResultBlock(QWidget):
     def __init__(self, label, display, parent=None):
         super().__init__(parent)
-        self.setFixedSize(100,100)
+        self.setMinimumSize(600,120)
         layout = QVBoxLayout()
         
         self.label = QLabel(label)
@@ -348,12 +348,13 @@ class ResultBlock(QWidget):
         self.display = QLineEdit(display)
         self.display.setReadOnly(True)
     
-        self.label.setStyleSheet('color: #FFFFFF; font-size: 20px; font-weight: 600;')
-        self.display.setStyleSheet('color: #FFFFFF; font-size: 22px; font-weight: 600; background-color: #1b1e28; border: 0px;')
+        self.label.setStyleSheet('color: #FFFFFF; font-size: 20px; font-weight: 600; background-color: #1b1e28;')
+        self.display.setStyleSheet('color: #FFFFFF; font-size: 16px; font-weight: 600; background-color: #1b1e28; border: 0px;')
         
         layout.addWidget(self.label)
         layout.addWidget(self.display)
         layout.setAlignment(Qt.AlignCenter)
+        layout.addStretch(1)
         
         self.setLayout(layout)
 

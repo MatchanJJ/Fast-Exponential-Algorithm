@@ -162,26 +162,25 @@ class SimulationWindow(QWidget):
             step = int(self.step_input.get_input())
             mode = self.mode_input.get_input()
             display = self.graph_input.get_input()
-            print(display)
             frames = ((end - start) // step) + 1
-             
+            
             MAX_FRAMES = 10000
             if frames > MAX_FRAMES:
                 frames = MAX_FRAMES
             gap = end - start
             
-            # error handling
+            # Input validation
             if step <= 0:
                 self.clear_line()
-                raise ValueError("Step must be a positive number.")
+                raise ValueError("Step must be a positive number")
             if start >= end:
                 self.clear_line()
-                raise ValueError("Start must be less than End.")
+                raise ValueError("Start must be less than End")
             if step > gap:
                 self.clear_line()
-                raise ValueError("Step must be within the range (end - start).")
+                raise ValueError("Step must be smaller than (End - Start)")
                     
-            # run only if animation is permanently stopped                
+            # Visualization logic
             if self.is_stop or not hasattr(self, 'graph_widget'):
                 if hasattr(self, 'graph_widget') and self.graph_widget:
                     self.graph_widget.clear_animation()
@@ -201,9 +200,42 @@ class SimulationWindow(QWidget):
             self.play_button.toggle_state()
             self.graph_widget.toggle_animation()
             
+        except ValueError as e:
+            error_msg = str(e)
+            if "invalid literal" in error_msg:
+                error_msg = "🔢 Invalid input: Please enter numeric values only"
+            QMessageBox.critical(
+                self,
+                "Input Validation Error",
+                f"""
+                <div style='font-size: 14px;'>
+                    <b>⚠️ Validation Failed:</b><br><br>
+                    {error_msg}<br>
+                    <span style='color: #888; font-size: 16px;'>
+                        Please check your input values and try again
+                    </span>
+                </div>
+                """,
+                QMessageBox.Ok
+            )
+            self.play_button.reset_state()
+            
         except Exception as e:
-            print(e)
-            QMessageBox.warning(self, "Input Error", str(e))
+            QMessageBox.critical(
+                self,
+                "Application Error",
+                f"""
+                <div style='font-size: 14px;'>
+                    <b>❗ Critical Error:</b><br><br>
+                    {str(e)}<br>
+                    <span style='color: #888; font-size: 16px;'>
+                        Please restart the application and report this issue
+                    </span>
+                </div>
+                """,
+                QMessageBox.Ok
+            )
+            self.play_button.reset_state()
             
     def on_stop(self):
         self.is_stop = True
@@ -211,6 +243,8 @@ class SimulationWindow(QWidget):
         try:
             if hasattr(self.graph_widget, 'animation') and self.graph_widget.animation:
                 self.graph_widget.animation.event_source.stop()
+                while self.stacked.count() > 1:
+                    self.stacked.removeWidget(self.stacked.widget(1))
         except Exception as e:
             self.is_stop = False
             print(str(e))
