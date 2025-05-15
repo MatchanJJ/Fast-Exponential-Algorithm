@@ -52,7 +52,7 @@ class VisualizationWindow(QWidget):
         self.back_btn = ct.BackButton()
         spacer = QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        label = QLabel("| Algorithm Visualization")
+        label = QLabel("| Fast-Expo Visualization")
         label.setStyleSheet('color: #03CD97; font-size: 22px; font-weight:bold')
 
         widget.layout().addWidget(self.back_btn)

@@ -66,7 +66,7 @@ class MenuWindow(QWidget):
         
     def left_button(self):
         self.left_btn = QToolButton()
-        self.left_btn.setText("Algorithm Visualization")
+        self.left_btn.setText("Fast-Expo Visualization")
         
         self.left_btn.setIcon(QIcon(self.left_icon))
         self.left_btn.setIconSize(self.btn_size)
@@ -79,7 +79,7 @@ class MenuWindow(QWidget):
 
     def right_button(self):
         self.right_btn = QToolButton()
-        self.right_btn.setText("Algorithm Simulation")
+        self.right_btn.setText("Analyze Time Complexity")
         
         self.right_btn.setIcon(QIcon(self.right_icon))
         self.right_btn.setIconSize(self.btn_size)

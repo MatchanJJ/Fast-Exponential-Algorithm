@@ -19,8 +19,8 @@ class StartWindow(QWidget):
         self.setWindowIcon(QIcon(icon))
         
         #create objects
-        self.label_1 = QLabel("Naive vs Fast Expo", self)
-        self.label_2 = QLabel("COMPARING ALGORITHM", self)
+        self.label_1 = QLabel("Fast-Expo vs Naive", self)
+        self.label_2 = QLabel("Implementing the Fast-Expo Algorithm", self)
         
         self.start_button = QPushButton("start", self)
         
@@ -32,7 +32,7 @@ class StartWindow(QWidget):
         self.setStyleSheet('#MainWidget {background-color: #141920; border: 2px solid #333; border-radius: 15px;}')
         
         self.label_1.setStyleSheet(f'font-size: 64px; font-family:"{poppins}", sans-serif; color: #FFFFFF; font-weight: bold ')
-        self.label_2.setStyleSheet(f'font-size: 32px; font-family:"{ibm}", monospace; color: #C7CBD7;')
+        self.label_2.setStyleSheet(f'font-size: 30px; font-family:"{ibm}", monospace; color: #C7CBD7;')
         
         self.start_button.setStyleSheet("""
                                     QPushButton {
