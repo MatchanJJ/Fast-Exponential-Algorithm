@@ -1,6 +1,5 @@
-# Compare Exponentiation Methods
-source ~/python_venv/bin/activate
-This project compares two methods of exponentiation: the **naive method** and **fast exponentiation (exponentiation by squaring)**. The program measures execution time for both methods and calculates a speedup factor.
+# Implementing Fast-Expo Algorithm
+This project implements the Fast-Expo Algorithm and compares two methods of exponentiation: the **naive method** and **fast exponentiation (exponentiation by squaring)**. The program graphs the operation time or run time of both algorithm. A visualization of the Fast-Expo Algorithm is also available. 
 
 ## Installation
 
@@ -57,5 +56,6 @@ This project compares two methods of exponentiation: the **naive method** and **
    *(Use `python3` instead of `python` if needed.)*
 
    ```
-
+This project was created for course code CS6: Algorithm And Complexity as a Final Project. 
+-robroi
 
